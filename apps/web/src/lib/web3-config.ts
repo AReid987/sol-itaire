@@ -105,7 +105,7 @@ export class ProductionTransactionBuilder {
 
   // Get transaction with retry logic
   async getTransaction(signature: string, maxRetries: number = WEB3_CONFIG.maxRetries): Promise<any> {
-    let lastError: Error
+    let lastError: Error = new Error('Unknown error')
 
     for (let i = 0; i < maxRetries; i++) {
       try {
