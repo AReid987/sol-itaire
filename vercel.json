@@ -1,5 +1,6 @@
 {
   "version": 2,
+  "installCommand": "pnpm install",
   "env": {
     "NEXT_PUBLIC_SOLANA_NETWORK": "devnet",
     "NEXT_PUBLIC_APP_URL": "https://sol-itaire.vercel.app"
