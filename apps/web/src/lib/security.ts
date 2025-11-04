@@ -234,35 +234,21 @@ export const transactionRateLimit = SecurityUtils.createRateLimiter(10, 60000) /
 export const gameStartRateLimit = SecurityUtils.createRateLimiter(5, 300000) // 5 games per 5 minutes
 export const claimRateLimit = SecurityUtils.createRateLimiter(3, 3600000) // 3 claims per hour
 
-// Security middleware for API routes
-export const securityMiddleware = (req: Request, res: Response, next: Function) => {
-  // Validate request method
-  const allowedMethods = ['GET', 'POST', 'PUT', 'DELETE']
-  if (!allowedMethods.includes(req.method)) {
-    return res.status(405).json({ error: 'Method not allowed' })
+// Security utilities for Next.js API routes
+export const validateMethod = (method: string, allowedMethods: string[] = ['GET', 'POST', 'PUT', 'DELETE']) => {
+  return allowedMethods.includes(method)
+}
+
+export const validateContentType = (contentType: string | undefined) => {
+  return contentType?.includes('application/json') ?? false
+}
+
+export const getSecurityHeaders = () => {
+  return {
+    ...SecurityUtils.getCSPHeaders(),
+    'X-Content-Type-Options': 'nosniff',
+    'X-Frame-Options': 'DENY',
+    'X-XSS-Protection': '1; mode=block',
+    'Referrer-Policy': 'strict-origin-when-cross-origin'
   }
-
-  // Set security headers
-  Object.entries(SecurityUtils.getCSPHeaders()).forEach(([header, value]) => {
-    res.setHeader(header, value)
-  })
-
-  // Validate Content-Type for POST/PUT requests
-  if (['POST', 'PUT'].includes(req.method)) {
-    const contentType = req.headers['content-type']
-    if (!contentType?.includes('application/json')) {
-      return res.status(400).json({ error: 'Invalid content type' })
-    }
-  }
-
-  // Rate limiting
-  const clientIp = req.headers['x-forwarded-for'] || req.connection.remoteAddress
-  if (!transactionRateLimit.isAllowed()) {
-    return res.status(429).json({
-      error: 'Too many requests',
-      retryAfter: 60
-    })
-  }
-
-  next()
 }
