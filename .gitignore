@@ -20,6 +20,7 @@ build/
 .idea/
 *.swp
 *.swo
+.hive-mind/
 
 # OS
 .DS_Store

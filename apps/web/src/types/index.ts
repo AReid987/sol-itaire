@@ -1,4 +1,12 @@
 // Game Types
+export interface Move {
+  fromPile: string;
+  toPile: string;
+  cardIndex: number;
+  movedCards: Card[];
+  flippedCard?: Card;
+}
+
 export interface GameState {
   id: string;
   player: string;
@@ -13,6 +21,8 @@ export interface GameState {
   isWon: boolean;
   isComplete: boolean;
   startTime: number;
+  endTime?: number;
+  moveHistory: Move[];
 }
 
 export interface Card {

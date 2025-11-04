@@ -2,7 +2,7 @@
 
 import { create } from 'zustand'
 import { devtools, persist } from 'zustand/middleware'
-import { GameState, GameTransaction, Card, Pile } from '../types'
+import { GameState, GameTransaction, Card, Pile, Move } from '../types'
 import { createDeck, canPlaceOnTableau, canPlaceOnFoundation, calculateScore } from '../utils'
 
 interface GameStore {
@@ -37,14 +37,7 @@ interface GameStore {
   setLoading: (loading: boolean) => void
 }
 
-// Move history for undo functionality
-interface Move {
-  fromPile: string
-  toPile: string
-  cardIndex: number
-  movedCards: Card[]
-  flippedCard?: Card
-}
+
 
 export const useGameStore = create<GameStore>()(
   devtools(
