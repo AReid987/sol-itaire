@@ -1,6 +1,5 @@
 {
   "version": 2,
-  "packageManager": "pnpm@8.6.12",
   "installCommand": "pnpm install",
   "env": {
     "NEXT_PUBLIC_SOLANA_NETWORK": "devnet",
