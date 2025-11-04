@@ -70,15 +70,7 @@ export function WalletAdapterProvider({ children }: { children: React.ReactNode 
   }, [network])
 
   // Auto-connect configuration
-  const autoConnect = useMemo(() => {
-    const autoConnectEnabled = process.env.NEXT_PUBLIC_WALLET_AUTO_CONNECT === 'true'
-    if (!autoConnectEnabled) return false
-
-    return {
-      autoConnect: true,
-      onError: handleWalletError,
-    }
-  }, [])
+  const autoConnect = process.env.NEXT_PUBLIC_WALLET_AUTO_CONNECT === 'true'
 
   // Wallet event handlers
   const onError = useCallback((error: Error) => {
