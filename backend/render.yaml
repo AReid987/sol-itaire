@@ -1,0 +1,28 @@
+services:
+  # Web Service for the Sol-itaire Backend API
+  - type: web
+    name: sol-itaire-backend
+    env: node
+    repo: https://github.com/AReid987/sol-itaire.git
+    rootDir: backend
+    buildCommand: "npm install"
+    startCommand: "npm start"
+    healthCheckPath: /health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 3001
+      - key: SOLANA_NETWORK
+        value: devnet
+      - key: SOLANA_RPC_URL
+        value: https://api.devnet.solana.com
+      - key: GAMING_TOKEN_ADDRESS
+        value: 2M4qUmbTiSRtRmfRcnZFWQyNXqkeQ4c9TzCdC7d6svPD
+      - key: MEMECOIN_ADDRESS
+        value: 6ygxtUVufLvihkSm4xv3Ny42ocRmwbMHaJ23kiovFKiH
+      - key: FRONTEND_URL
+        sync: false
+      - key: JWT_SECRET
+        generateValue: true
+    plan: free
