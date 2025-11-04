@@ -1,0 +1,77 @@
+name: Preview Deployment
+
+on:
+  pull_request:
+    branches: [main]
+    types: [opened, synchronize]
+
+env:
+  NODE_VERSION: '18'
+
+jobs:
+  preview-deploy:
+    name: Deploy Preview
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'pnpm'
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 8
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Run tests
+        run: |
+          pnpm run type-check
+          pnpm run lint
+          pnpm run test:frontend
+          pnpm run test:backend
+
+      - name: Build frontend
+        run: pnpm run build:frontend
+
+      - name: Install Vercel CLI
+        run: npm install --global vercel@latest
+
+      - name: Deploy preview to Vercel
+        working-directory: ./apps/web
+        run: vercel deploy --prebuilt --token=${{ secrets.VERCEL_TOKEN }}
+        id: deploy
+
+      - name: Comment PR with preview URL
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const output = `## 🚀 Preview Deployed
+
+            **Frontend Preview**: ${{ steps.deploy.outputs.url }}
+
+            **Changes**:
+            - Smart contracts: Ready for testing
+            - Frontend: Updated with latest changes
+            - Backend: Available on Render dev instance
+
+            **Testing Instructions**:
+            1. Connect your Solana wallet (Phantom/Solflare)
+            2. Switch to Devnet for testing
+            3. Test game functionality with small amounts
+            4. Verify token transactions work correctly
+            `;
+
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: output
+            });

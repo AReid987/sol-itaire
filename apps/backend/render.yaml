@@ -1,0 +1,57 @@
+services:
+  # Backend API Service
+  - type: web
+    name: sol-itaire-backend
+    runtime: node
+    plan: free
+    repo: https://github.com/your-org/sol-itaire.git
+    rootDir: apps/backend
+    buildCommand: pnpm install && pnpm build
+    startCommand: pnpm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 10000
+      - key: SUPABASE_URL
+        sync: false
+      - key: SUPABASE_ANON_KEY
+        sync: false
+      - key: SUPABASE_SERVICE_ROLE_KEY
+        sync: false
+      - key: JWT_SECRET
+        generateValue: true
+      - key: JWT_EXPIRES_IN
+        value: 7d
+      - key: SOLANA_NETWORK
+        value: devnet
+      - key: SOLANA_RPC_URL
+        value: https://api.devnet.solana.com
+      - key: GAME_PROGRAM_ID
+        value: Fg6PaFpoGXkYsidMpWTK6W2BeZ7FEfcYkg476zPFsLnS
+      - key: GAMING_TOKEN_MINT
+        value: TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA
+      - key: MEMECOIN_MINT
+        value: TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA
+      - key: RATE_LIMIT_WINDOW_MS
+        value: 900000
+      - key: RATE_LIMIT_MAX_REQUESTS
+        value: 100
+      - key: LOG_LEVEL
+        value: info
+      - key: LOG_FORMAT
+        value: combined
+      - key: HEALTH_CHECK_INTERVAL
+        value: 30000
+    healthCheckPath: /health
+    autoDeploy: true
+    previews:
+      enabled: true
+      expiration: 604800 # 7 days
+
+databases:
+  # Supabase PostgreSQL (configured separately)
+  # This section is for reference as Supabase is managed separately
+
+# Render Web Service for Frontend (reference)
+# Frontend would be deployed separately with its own render.yaml
