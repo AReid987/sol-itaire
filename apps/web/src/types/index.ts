@@ -43,6 +43,7 @@ export interface SolitaireError {
   code: ErrorCode;
   message: string;
   details?: any;
+  timestamp?: number;
 }
 
 export type ErrorCode =
