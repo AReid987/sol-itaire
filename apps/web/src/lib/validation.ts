@@ -51,7 +51,7 @@ export class ValidationUtils {
     const pileEntries = Object.entries(gameState.piles)
 
     // Check for required pile types
-    const pileTypes = pileEntries.map(([, pile]) => pile.type)
+    const pileTypes = pileEntries.map(([, pile]) => (pile as any).type)
     const hasTableau = pileTypes.filter(type => type === 'tableau').length === 7
     const hasFoundations = pileTypes.filter(type => type === 'foundation').length === 4
     const hasStock = pileTypes.includes('stock')
