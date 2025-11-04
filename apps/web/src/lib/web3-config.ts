@@ -110,7 +110,7 @@ export class ProductionTransactionBuilder {
     for (let i = 0; i < maxRetries; i++) {
       try {
         return await this.connection.getTransaction(signature, {
-          commitment: WEB3_CONFIG.commitment,
+          commitment: WEB3_CONFIG.commitment === 'processed' ? 'confirmed' : WEB3_CONFIG.commitment,
           maxSupportedTransactionVersion: 0
         })
       } catch (error) {
