@@ -1,6 +1,7 @@
 'use client'
 
 import { useCallback } from 'react'
+import { PublicKey } from '@solana/web3.js'
 import { useGameStore } from '@/store/gameStore'
 import { useSolana } from './useSolana'
 
