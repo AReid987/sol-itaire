@@ -48,10 +48,15 @@ export interface SolitaireError {
 
 export type ErrorCode =
   | 'INSUFFICIENT_BALANCE'
+  | 'INSUFFICIENT_FUNDS'
   | 'INVALID_MOVE'
   | 'WALLET_NOT_CONNECTED'
   | 'TRANSACTION_FAILED'
   | 'NETWORK_ERROR'
+  | 'INVALID_GAME_STATE'
+  | 'UNAUTHORIZED'
+  | 'TOKEN_ERROR'
+  | 'GAME_NOT_FOUND'
   | 'INVALID_SIGNATURE';
 
 export interface GameMove {
