@@ -3,7 +3,8 @@
   "installCommand": "pnpm install",
   "env": {
     "NEXT_PUBLIC_SOLANA_NETWORK": "devnet",
-    "NEXT_PUBLIC_APP_URL": "https://sol-itaire.vercel.app"
+    "NEXT_PUBLIC_APP_URL": "https://sol-itaire.vercel.app",
+    "ENABLE_COREPACK_SHIM": "1"
   },
   "headers": [
     {

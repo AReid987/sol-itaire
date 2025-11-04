@@ -23,8 +23,7 @@
     "deploy:programs": "anchor deploy",
     "deploy:backend": "./apps/backend/scripts/deploy.sh",
     "start:backend": "pnpm --filter @sol-itaire/backend start",
-    "bootstrap": "pnpm install && pnpm build",
-    "preinstall": "corepack enable"
+    "bootstrap": "pnpm install && pnpm build"
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^6.0.0",
