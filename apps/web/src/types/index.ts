@@ -9,6 +9,10 @@ export interface GameState {
   stakeAmount: number;
   createdAt: Date;
   updatedAt: Date;
+  piles: Record<string, Pile>;
+  isWon: boolean;
+  isComplete: boolean;
+  startTime: number;
 }
 
 export interface Card {
