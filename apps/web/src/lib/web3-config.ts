@@ -42,25 +42,6 @@ export function createOptimizedConnection(endpoint?: string): Connection {
           'User-Agent': 'Sol-itaire/1.0.0'
         }
       : undefined,
-    fetchMiddleware: process.env.NODE_ENV === 'production'
-      ? async (fetch: typeof global.fetch, info: RequestInfo, init: RequestInit) => {
-          try {
-            const response = await fetch(info, {
-              ...init,
-              signal: AbortSignal.timeout(WEB3_CONFIG.transactionTimeout),
-            })
-
-            if (!response.ok) {
-              throw new Error(`RPC Error: ${response.status} ${response.statusText}`)
-            }
-
-            return response
-          } catch (error) {
-            console.error('RPC fetch error:', error)
-            throw error
-          }
-        }
-      : undefined,
     disableRetryOnRateLimit: false,
     confirmTransactionInitialTimeout: WEB3_CONFIG.transactionTimeout,
   }
