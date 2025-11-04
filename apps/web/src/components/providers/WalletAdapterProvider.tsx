@@ -78,15 +78,7 @@ export function WalletAdapterProvider({ children }: { children: React.ReactNode 
     setConnectionError(error.message)
   }, [])
 
-  const onConnect = useCallback(() => {
-    setConnectionError(null)
-    console.log('Wallet connected successfully')
-  }, [])
-
-  const onDisconnect = useCallback(() => {
-    console.log('Wallet disconnected')
-  }, [])
-
+  
   // Handle connection errors with user-friendly messages
   if (connectionError) {
     return (
@@ -115,8 +107,6 @@ export function WalletAdapterProvider({ children }: { children: React.ReactNode 
         wallets={wallets}
         autoConnect={autoConnect}
         onError={onError}
-        onConnect={onConnect}
-        onDisconnect={onDisconnect}
         localStorageKey="solitaire-wallet-adapter"
       >
         <WalletModalProvider>
