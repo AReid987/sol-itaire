@@ -171,7 +171,7 @@ export const SecurityUtils = {
   // Check if origin is allowed
   isOriginAllowed(origin: string): boolean {
     return WEB3_CONFIG.allowedOrigins.includes(origin) ||
-           WEB3_CONFIG.allowedOrigins.some(allowed => origin.startsWith(allowed))
+           WEB3_CONFIG.allowedOrigins.some(allowed => allowed && origin.startsWith(allowed))
   },
 
   // Generate secure random value
