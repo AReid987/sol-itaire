@@ -1,0 +1,19 @@
+{
+  "name": "@sol-itaire/types",
+  "version": "0.1.0",
+  "description": "Shared TypeScript types for Sol-itaire",
+  "main": "src/index.ts",
+  "types": "src/index.ts",
+  "scripts": {
+    "build": "tsc",
+    "clean": "rm -rf dist",
+    "type-check": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@solana/web3.js": "^1.87.6",
+    "@solana/spl-token": "^0.3.8"
+  },
+  "devDependencies": {
+    "typescript": "^5.1.6"
+  }
+}

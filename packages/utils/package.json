@@ -1,0 +1,24 @@
+{
+  "name": "@sol-itaire/utils",
+  "version": "0.1.0",
+  "description": "Utility functions for Sol-itaire",
+  "main": "src/index.ts",
+  "types": "src/index.ts",
+  "scripts": {
+    "build": "tsc",
+    "clean": "rm -rf dist",
+    "type-check": "tsc --noEmit",
+    "test": "jest"
+  },
+  "dependencies": {
+    "@sol-itaire/types": "workspace:*",
+    "@solana/web3.js": "^1.87.6",
+    "@solana/spl-token": "^0.3.8",
+    "bs58": "^5.0.0"
+  },
+  "devDependencies": {
+    "@types/jest": "^29.5.3",
+    "jest": "^29.6.2",
+    "typescript": "^5.1.6"
+  }
+}
