@@ -67,4 +67,4 @@ Cargo.lock
 .vercel
 
 # Claude-Flow
-.claude-flow/
+.claude-flow/**
