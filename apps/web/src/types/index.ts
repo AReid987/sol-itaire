@@ -43,14 +43,14 @@ export interface Pile {
 }
 
 export interface GameTransaction {
-  id: string;
+  id?: string;
   gameId: string;
-  type: 'stake' | 'win' | 'withdraw';
-  amount: number;
-  tokenMint: string;
+  type: 'stake' | 'win' | 'withdraw' | 'start' | 'move' | 'complete';
+  amount?: number;
+  tokenMint?: string;
   signature?: string;
   status: 'pending' | 'confirmed' | 'failed';
-  timestamp: Date;
+  timestamp: number;
 }
 
 export interface SolitaireError {
