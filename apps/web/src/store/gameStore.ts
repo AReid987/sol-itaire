@@ -156,7 +156,7 @@ export const useGameStore = create<GameStore>()(
             const targetCard = toPileData.cards[toPileData.cards.length - 1] || null
             isValidMove = canPlaceOnTableau(card, targetCard)
           } else if (toPileData.type === 'foundation') {
-            isValidMove = cardIndex === fromPileData.cards.length - 1 && canPlaceOnFoundation(card, toPileData)
+            isValidMove = cardIndex === fromPileData.cards.length - 1 && canPlaceOnFoundation(card, toPileData.cards)
           }
 
           if (!isValidMove) {
