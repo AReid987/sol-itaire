@@ -45,6 +45,7 @@ export interface Pile {
 export interface GameTransaction {
   id?: string;
   gameId: string;
+  player: string;
   type: 'stake' | 'win' | 'withdraw' | 'start' | 'move' | 'complete';
   amount?: number;
   tokenMint?: string;
