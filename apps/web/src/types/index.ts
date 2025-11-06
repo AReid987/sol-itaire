@@ -8,15 +8,15 @@ export interface Move {
 }
 
 export interface GameState {
-  id: string;
+  id?: string;
   player: string;
-  cards: Card[];
+  cards?: Card[];
   score: number;
   moves: number;
-  status: 'playing' | 'won' | 'lost';
+  status?: 'playing' | 'won' | 'lost';
   stakeAmount: number;
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt?: Date;
+  updatedAt?: Date;
   piles: Record<string, Pile>;
   isWon: boolean;
   isComplete: boolean;
