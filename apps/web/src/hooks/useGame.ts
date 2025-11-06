@@ -49,8 +49,7 @@ export function useGame() {
     // Make move locally first for immediate feedback
     gameStore.makeMove(fromPile, toPile, cardIndex)
 
-    // Sync with blockchain
-    const gameId = `${currentGame.player}-${currentGame.createdAt.getTime()}`
+    const gameId = `${currentGame.player}-${currentGame.startTime}`
     const signature = await solana.makeMove(gameId, fromPile, toPile, cardIndex)
 
     if (!signature) {
@@ -79,8 +78,7 @@ export function useGame() {
       return
     }
 
-    // Complete game on blockchain
-    const gameId = `${currentGame.player}-${currentGame.createdAt.getTime()}`
+    const gameId = `${currentGame.player}-${currentGame.startTime}`
     const signature = await solana.completeGame(gameId, won, currentGame.score)
 
     if (!signature) {
@@ -108,7 +106,7 @@ export function useGame() {
       return
     }
 
-    const gameId = `${currentGame.player}-${currentGame.createdAt.getTime()}`
+    const gameId = `${currentGame.player}-${currentGame.startTime}`
     const signature = await solana.stakeTokens(-currentGame.stakeAmount) // Negative for withdrawal
 
     if (signature) {
