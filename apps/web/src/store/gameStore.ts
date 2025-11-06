@@ -181,11 +181,8 @@ export const useGameStore = create<GameStore>()(
 
           // Update game state
           const newMoves = moves + 1
-          const newScore = calculateScore({
-            ...state.currentGame,
-            piles: newPiles,
-            moves: newMoves,
-          })
+          const timeElapsed = (Date.now() - state.currentGame.startTime) / 1000;
+          const newScore = calculateScore(newMoves, timeElapsed);
 
           const isWon = Object.values(newPiles)
             .filter(pile => pile.type === 'foundation')
