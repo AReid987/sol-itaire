@@ -59,11 +59,7 @@ const nextConfig = {
         '@solana/web3.js': require.resolve('@solana/web3.js'),
       }
 
-      // Exclude unused dependencies from client bundle
-      config.externals = {
-        ...config.externals,
-        'bs58': 'bs58',
-      }
+
     }
 
     // Improve performance for Web3 packages
