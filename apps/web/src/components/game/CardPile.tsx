@@ -11,6 +11,9 @@ interface CardPileProps {
 }
 
 export function CardPile({ pile, onClick, isSelected }: CardPileProps) {
+  if (!pile) {
+    return null; // or a placeholder
+  }
   const handleCardClick = (cardIndex: number) => {
     const card = pile.cards[cardIndex]
     if (card && card.faceUp) {
