@@ -15,6 +15,10 @@ build/
 .env.test.local
 .env.production.local
 
+# Keypairs
+*-keypair.json
+*.json
+
 # IDE
 .vscode/
 .idea/
