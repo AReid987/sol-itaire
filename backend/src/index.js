@@ -1,7 +1,7 @@
 const express = require('express');
 const cors = require('cors');
-const { Connection, PublicKey, Keypair, LAMPORTS_PER_SOL, SystemProgram } = require('@solana/web3.js');
-const { AnchorProvider, Program, Wallet } = require('@coral-xyz/anchor');
+const { Connection, PublicKey, Keypair, SystemProgram } = require('@solana/web3.js');
+const { AnchorProvider, Program, Wallet, BN } = require('@coral-xyz/anchor');
 const TOKEN_PROGRAM_ID = new PublicKey('TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA');
 const SYSVAR_RENT_PUBKEY = new PublicKey('SysvarRent111111111111111111111111111111111');
 const { MongoClient } = require('mongodb');
