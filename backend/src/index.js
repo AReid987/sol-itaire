@@ -1,7 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const { Connection, PublicKey, Keypair, LAMPORTS_PER_SOL, SystemProgram } = require('@solana/web3.js');
-const { AnchorProvider, Program, AnchorWallet } = require('@coral-xyz/anchor');
+const { AnchorProvider, Program, Wallet } = require('@coral-xyz/anchor');
 const TOKEN_PROGRAM_ID = new PublicKey('TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA');
 const SYSVAR_RENT_PUBKEY = new PublicKey('SysvarRent111111111111111111111111111111111');
 const { MongoClient } = require('mongodb');
@@ -211,19 +211,8 @@ function getProvider() {
     keypair = Keypair.generate();
   }
 
-  const wallet = {
-    publicKey: keypair.publicKey,
-    signTransaction: async (tx) => {
-      tx.sign([keypair]);
-      return tx;
-    },
-    signAllTransactions: async (txs) => {
-      txs.forEach((tx) => tx.sign([keypair]));
-      return txs;
-    }
-  };
-
-  provider = new AnchorProvider(connection, new AnchorWallet(wallet), { commitment: 'processed' });
+  const wallet = new Wallet(keypair);
+  provider = new AnchorProvider(connection, wallet, { commitment: 'processed' });
   return provider;
 }
 
