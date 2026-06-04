@@ -3,8 +3,9 @@
 import { useConnection, useWallet } from '@solana/wallet-adapter-react'
 import { useEffect, useState } from 'react'
 import { PublicKey } from '@solana/web3.js'
-import { getAccount } from '@solana/spl-token'
+import { getAccount, getAssociatedTokenAddress } from '@solana/spl-token'
 import { motion } from 'framer-motion'
+import { GAMING_TOKEN_MINT, MEMECOIN_MINT, useSolana } from '@/hooks/useSolana'
 
 interface TokenBalance {
   mint: string
@@ -17,68 +18,37 @@ interface TokenBalance {
 export function TokenBalances() {
   const { connection } = useConnection()
   const { publicKey } = useWallet()
-  const [balances, setBalances] = useState<TokenBalance[]>([])
+  const { fetchBalances, balance } = useSolana()
   const [loading, setLoading] = useState(false)
-
-  // Token mint addresses (these would come from your deployed programs)
-  const TOKENS = {
-    GAMING_TOKEN: {
-      mint: 'GAMING_TOKEN_MINT_ADDRESS', // Replace with actual mint
-      symbol: 'GAME',
-      name: 'Gaming Token',
-      decimals: 9,
-    },
-    MEMECOIN: {
-      mint: 'MEMECOIN_MINT_ADDRESS', // Replace with actual mint
-      symbol: 'SOLI',
-      name: 'Sol-itaire Memecoin',
-      decimals: 9,
-    },
-  }
 
   useEffect(() => {
     if (!publicKey) return
 
-    const fetchBalances = async () => {
+    const fetchAllBalances = async () => {
       setLoading(true)
-      const tokenBalances: TokenBalance[] = []
-
-      for (const [key, token] of Object.entries(TOKENS)) {
-        try {
-          // Create token account address
-          const tokenAccount = await getAssociatedTokenAddress(
-            new PublicKey(token.mint),
-            publicKey
-          )
-
-          // Get account info
-          const accountInfo = await getAccount(connection, tokenAccount)
-
-          tokenBalances.push({
-            mint: token.mint,
-            balance: Number(accountInfo.amount) / Math.pow(10, token.decimals),
-            decimals: token.decimals,
-            symbol: token.symbol,
-            name: token.name,
-          })
-        } catch (error) {
-          // Token account doesn't exist or user has no balance
-          tokenBalances.push({
-            mint: token.mint,
-            balance: 0,
-            decimals: token.decimals,
-            symbol: token.symbol,
-            name: token.name,
-          })
-        }
-      }
-
-      setBalances(tokenBalances)
+      await fetchBalances()
       setLoading(false)
     }
 
-    fetchBalances()
-  }, [publicKey, connection])
+    fetchAllBalances()
+  }, [publicKey, fetchBalances])
+
+  const balances: TokenBalance[] = [
+    {
+      mint: GAMING_TOKEN_MINT.toBase58(),
+      balance: balance.game,
+      decimals: 9,
+      symbol: 'GAME',
+      name: 'Gaming Token',
+    },
+    {
+      mint: MEMECOIN_MINT.toBase58(),
+      balance: balance.memecoin,
+      decimals: 9,
+      symbol: 'SOLI',
+      name: 'Sol-itaire Memecoin',
+    },
+  ]
 
   if (loading) {
     return (
@@ -108,7 +78,7 @@ export function TokenBalances() {
             <div>
               <p className="text-white font-medium text-sm">{token.symbol}</p>
               <p className="text-gray-300 text-xs">
-                {token.balance.toFixed(4)} {token.name}
+                {token.balance.toLocaleString()} {token.name}
               </p>
             </div>
           </div>
@@ -116,23 +86,4 @@ export function TokenBalances() {
       ))}
     </motion.div>
   )
-}
-
-// Helper function to get associated token address
-async function getAssociatedTokenAddress(
-  mint: PublicKey,
-  owner: PublicKey,
-  allowOwnerOffCurve = false,
-  programId = new PublicKey('TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA'),
-  associatedTokenProgramId = new PublicKey('ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL')
-): Promise<PublicKey> {
-  const [associatedToken] = await PublicKey.findProgramAddress(
-    [
-      owner.toBuffer(),
-      programId.toBuffer(),
-      mint.toBuffer(),
-    ],
-    associatedTokenProgramId
-  )
-  return associatedToken
 }

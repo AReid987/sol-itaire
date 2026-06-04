@@ -3,36 +3,30 @@
 import { useCallback } from 'react'
 import { PublicKey } from '@solana/web3.js'
 import { useGameStore } from '@/store/gameStore'
-import { useSolana } from './useSolana'
+import { useSolana, GAMING_TOKEN_MINT, MEMECOIN_MINT } from './useSolana'
 
 export function useGame() {
   const gameStore = useGameStore()
   const solana = useSolana()
 
-  // Enhanced game actions with blockchain integration
   const startNewGame = useCallback(async (stakeAmount: number) => {
     if (!solana.isConnected) {
       gameStore.setError('Please connect your wallet first')
       return
     }
 
-    // Check if user has sufficient balance
-    const balance = await solana.getTokenBalance(
-      new PublicKey('GAMING_TOKEN_MINT_ADDRESS') // Replace with actual mint
-    )
+    const balance = await solana.getTokenBalance(GAMING_TOKEN_MINT)
 
     if (balance < stakeAmount) {
       gameStore.setError('Insufficient token balance')
       return
     }
 
-    // Start game on blockchain
     const result = await solana.initializeGame(stakeAmount)
     if (!result) {
-      return // Error already set by solana hook
+      return
     }
 
-    // Start local game
     gameStore.startNewGame(solana.publicKey?.toBase58() || '', stakeAmount)
   }, [solana, gameStore])
 
@@ -46,30 +40,15 @@ export function useGame() {
       return
     }
 
-    // Make move locally first for immediate feedback
     gameStore.makeMove(fromPile, toPile, cardIndex)
 
     const gameId = `${currentGame.player}-${currentGame.startTime}`
     const signature = await solana.makeMove(gameId, fromPile, toPile, cardIndex)
 
     if (!signature) {
-      // Revert move if blockchain transaction failed
       gameStore.undoMove()
       return
     }
-
-    // Update transaction record
-    const transaction = {
-      type: 'move' as const,
-      gameId,
-      player: currentGame.player,
-      timestamp: Date.now(),
-      signature,
-      status: 'confirmed' as const,
-    }
-
-    // Note: GameStore doesn't have setState method in current implementation
-    // This would need to be added to the store if needed
   }, [gameStore, solana])
 
   const completeGame = useCallback(async (won: boolean) => {
@@ -86,16 +65,24 @@ export function useGame() {
       return
     }
 
-    // Update local game state
     gameStore.completeGame(won, currentGame.score)
 
-    // Claim rewards if won
-    if (won) {
-      const rewardSignature = await solana.claimRewards(gameId)
+    if (won && solana.publicKey) {
+      const timeTaken = currentGame.endTime ? currentGame.endTime - currentGame.startTime : 0
+      const moves = currentGame.moves
+      let reward = 100
+
+      if (timeTaken < 2 * 60) reward += 200
+      else if (timeTaken < 3 * 60) reward += 100
+      else if (timeTaken < 5 * 60) reward += 50
+
+      if (moves < 60) reward += 200
+      else if (moves < 80) reward += 100
+      else if (moves < 100) reward += 50
+
+      const rewardSignature = await solana.claimRewards(gameId, reward)
       if (rewardSignature) {
-        // Update player stats with rewards
-        // Note: GameStore doesn't have setState method in current implementation
-        // This would need to be added to the store if needed
+        gameStore.setError(null)
       }
     }
   }, [gameStore, solana])
@@ -107,35 +94,29 @@ export function useGame() {
     }
 
     const gameId = `${currentGame.player}-${currentGame.startTime}`
-    const signature = await solana.stakeTokens(-currentGame.stakeAmount) // Negative for withdrawal
+    const signature = await solana.withdrawStake(gameId)
 
     if (signature) {
       gameStore.resetGame()
     }
   }, [gameStore, solana])
 
-  // Get game statistics from blockchain
   const syncStats = useCallback(async () => {
     if (!solana.isConnected) return
 
     try {
-      // Fetch player stats from your backend or smart contract
-      // This is a placeholder - implement based on your architecture
       const stats = await fetchPlayerStats(solana.publicKey?.toBase58() || '')
-      // Note: GameStore doesn't have setState method in current implementation
-      // This would need to be added to the store if needed
+      gameStore.setPlayerStats(stats)
     } catch (error) {
       console.error('Failed to sync stats:', error)
     }
   }, [solana, gameStore])
 
   return {
-    // Game state
     currentGame: gameStore.currentGame,
     gameHistory: gameStore.gameHistory,
     playerStats: gameStore.playerStats,
 
-    // Game actions
     startNewGame,
     makeMove,
     undoMove: gameStore.undoMove,
@@ -143,12 +124,8 @@ export function useGame() {
     withdrawStake,
     resetGame: gameStore.resetGame,
 
-    // Blockchain actions
     syncStats,
-    stakeTokens: solana.stakeTokens,
-    claimRewards: solana.claimRewards,
 
-    // UI state
     isLoading: gameStore.isLoading || solana.isLoading,
     error: gameStore.error || solana.error,
     setError: gameStore.setError,
@@ -159,7 +136,6 @@ export function useGame() {
   }
 }
 
-// Helper function to fetch player stats from backend
 async function fetchPlayerStats(playerAddress: string) {
   try {
     const response = await fetch(`/api/player-stats?address=${playerAddress}`)

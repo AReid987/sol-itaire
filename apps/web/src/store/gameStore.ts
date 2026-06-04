@@ -26,9 +26,13 @@ interface GameStore {
 
   // Blockchain integration
   syncWithBlockchain: () => Promise<void>
-  stakeTokens: (amount: number) => Promise<string>
-  claimRewards: (gameId: string) => Promise<string>
-  withdrawStake: (gameId: string) => Promise<string>
+  setPlayerStats: (stats: {
+    gamesPlayed: number
+    gamesWon: number
+    totalEarnings: number
+    bestTime: number
+    currentStreak: number
+  }) => void
 
   // UI state
   isLoading: boolean
@@ -332,58 +336,8 @@ export const useGameStore = create<GameStore>()(
           }
         },
 
-        stakeTokens: async (amount: number) => {
-          set({ isLoading: true, error: null })
-          try {
-            // TODO: Implement token staking logic
-            // Interact with gaming token smart contract
-            const transactionId = `stake_${Date.now()}`
-            console.log(`Staking ${amount} tokens...`)
-            set({ isLoading: false })
-            return transactionId
-          } catch (error) {
-            set({
-              error: error instanceof Error ? error.message : 'Failed to stake tokens',
-              isLoading: false
-            })
-            throw error
-          }
-        },
-
-        claimRewards: async (gameId: string) => {
-          set({ isLoading: true, error: null })
-          try {
-            // TODO: Implement reward claiming logic
-            // Interact with memecoin smart contract
-            const transactionId = `claim_${Date.now()}`
-            console.log(`Claiming rewards for game ${gameId}...`)
-            set({ isLoading: false })
-            return transactionId
-          } catch (error) {
-            set({
-              error: error instanceof Error ? error.message : 'Failed to claim rewards',
-              isLoading: false
-            })
-            throw error
-          }
-        },
-
-        withdrawStake: async (gameId: string) => {
-          set({ isLoading: true, error: null })
-          try {
-            // TODO: Implement stake withdrawal logic
-            // Interact with game smart contract
-            const transactionId = `withdraw_${Date.now()}`
-            console.log(`Withdrawing stake for game ${gameId}...`)
-            set({ isLoading: false })
-            return transactionId
-          } catch (error) {
-            set({
-              error: error instanceof Error ? error.message : 'Failed to withdraw stake',
-              isLoading: false
-            })
-            throw error
-          }
+        setPlayerStats: (stats) => {
+          set({ playerStats: stats })
         },
 
         setError: (error: string | null) => {

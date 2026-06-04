@@ -78,13 +78,16 @@ pub mod gaming_token {
     pub fn stake_tokens(
         ctx: Context<StakeTokens>,
         amount: u64,
-        lock_period: i64, // Lock period in seconds
+        lock_period: i64,
     ) -> Result<()> {
         let stake_account = &mut ctx.accounts.stake_account;
         let clock = Clock::get()?;
 
         require!(amount > 0, GamingTokenError::InvalidAmount);
         require!(lock_period > 0, GamingTokenError::InvalidLockPeriod);
+
+        // Set the mint on the stake account
+        stake_account.mint = ctx.accounts.mint.key();
 
         // Transfer tokens to stake vault
         let cpi_accounts = Transfer {
@@ -303,6 +306,7 @@ pub struct StakeTokens<'info> {
     #[account(mut)]
     pub user_token_account: Account<'info, TokenAccount>,
 
+    #[account(mut)]
     pub mint: Account<'info, Mint>,
 
     #[account(mut)]

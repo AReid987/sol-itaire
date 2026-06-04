@@ -1,25 +1,39 @@
 'use client'
 
+import { useState, useMemo } from 'react'
 import { motion } from 'framer-motion'
+import { useSolana, GAMING_TOKEN_MINT } from '@/hooks/useSolana'
 
 interface StakeModalProps {
   isOpen: boolean
   onClose: () => void
-  onStake: () => void
+  onStake: (amount: number) => Promise<void>
   stakeAmount: number
   onStakeAmountChange: (amount: number) => void
 }
 
-export function StakeModal({
-  isOpen,
-  onClose,
-  onStake,
-  stakeAmount,
-  onStakeAmountChange,
-}: StakeModalProps) {
+export function StakeModal({ isOpen, onClose, onStake, stakeAmount, onStakeAmountChange }: StakeModalProps) {
+  const [stating, setStating] = useState(false)
+  const { balance } = useSolana()
+
+  const presetAmounts = useMemo(() => [50, 100, 250, 500, 1000], [])
+  const insufficientBalance = balance.game < stakeAmount && stakeAmount > 0
+
   if (!isOpen) return null
 
-  const presetAmounts = [50, 100, 250, 500, 1000]
+  const handleStake = async () => {
+    if (stating) return
+    setStating(true)
+
+    try {
+      await onStake(stakeAmount)
+      onClose()
+    } catch (error) {
+      console.error("Stake failed", error)
+    } finally {
+      setStating(false)
+    }
+  }
 
   return (
     <motion.div
@@ -40,6 +54,12 @@ export function StakeModal({
           Stake Tokens to Play
         </h2>
 
+        <div className="mb-4 p-3 bg-gray-50 rounded-lg">
+          <p className="text-sm text-gray-600">
+            Available Balance: <span className="font-semibold text-blue-600">{balance.game.toLocaleString()} GAME</span> tokens
+          </p>
+        </div>
+
         <p className="text-gray-600 mb-6">
           Stake your gaming tokens to play Solitaire. Win to double your stake!
         </p>
@@ -52,12 +72,15 @@ export function StakeModal({
             <input
               type="number"
               value={stakeAmount}
-              onChange={(e) => onStakeAmountChange(Number(e.target.value))}
+              onChange={event => onStakeAmountChange(Number(event.target.value))}
               min="1"
               className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
             />
             <span className="text-gray-500">GAME</span>
           </div>
+          {insufficientBalance && (
+            <p className="text-red-500 text-xs mt-1">Insufficient balance</p>
+          )}
         </div>
 
         <div className="mb-6">
@@ -67,9 +90,12 @@ export function StakeModal({
               <button
                 key={amount}
                 onClick={() => onStakeAmountChange(amount)}
+                disabled={amount > balance.game}
                 className={`px-3 py-2 rounded-lg font-medium transition-colors duration-200 ${
                   stakeAmount === amount
                     ? 'bg-blue-600 text-white'
+                    : amount > balance.game
+                    ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
                     : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                 }`}
               >
@@ -96,10 +122,11 @@ export function StakeModal({
             Cancel
           </button>
           <button
-            onClick={onStake}
-            className="flex-1 px-4 py-2 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg font-medium hover:from-blue-700 hover:to-purple-700 transition-all duration-200"
+            onClick={handleStake}
+            disabled={stating || insufficientBalance || stakeAmount <= 0}
+            className="flex-1 px-4 py-2 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg font-medium hover:from-blue-700 hover:to-purple-700 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            Stake & Play
+            {stating ? 'Staking...' : 'Stake & Play'}
           </button>
         </div>
       </motion.div>
