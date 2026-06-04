@@ -20,9 +20,9 @@ app.use(express.json());
 // Program IDs (from Anchor.toml)
 // ===================================================================
 const PROGRAM_IDS = {
-  solitaire: 'Fg6PaFpoGXkYsidMpWTK6W2BeZ7FEfcYkg476zPFsLnS',
-  gamingToken: 'DhkqYC1mAnZ41dgPz6NDLovGM6zxE1j7wHLBAizYkNB8', // gitguardian-ignore: line
-  memecoin: 'A1WF2rG5Vs5tG6nhq2ZeDEN9hyESrWV3dtyq1XdBWkqT'
+  solitaire: process.env.SOLITAIRE_PROGRAM_ID || 'Fg6PaFpoGXkYsidMpWTK6W2BeZ7FEfcYkg476zPFsLnS',
+  gamingToken: process.env.GAMING_TOKEN_PROGRAM_ID || 'DhkqYC1mAnZ41dgPz6NDLovGM6zxE1j7wHLBAizYkNB8', // gitguardian-ignore: line
+  memecoin: process.env.MEMECOIN_PROGRAM_ID || 'A1WF2rG5Vs5tG6nhq2ZeDEN9hyESrWV3dtyq1XdBWkqT'
 };
 
 // ===================================================================
