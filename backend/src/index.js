@@ -9,9 +9,9 @@ require('dotenv').config();
 
 // Program IDs (from Anchor.toml)
 const PROGRAM_IDS = {
-  SOLITAIRE: 'Fg6PaFpoGXkYsidMpWTK6W2BeZ7FEfcYkg476zPFsLnS',
-  GAMING_TOKEN: 'DhkqYC1mAnZ41dgPz6NDLovGM6zxE1j7wHLBAizYkNB8',
-  MEMECOIN: 'A1WF2rG5Vs5tG6nhq2ZeDEN9hyESrWV3dtyq1XdBWkqT'
+  SOLITAIRE: process.env.SOLITAIRE_PROGRAM_ID || 'YOUR_SOLITAIRE_PROGRAM_ID',
+  GAMING_TOKEN: process.env.GAMING_TOKEN_PROGRAM_ID || 'YOUR_GAMING_TOKEN_PROGRAM_ID',
+  MEMECOIN: process.env.MEMECOIN_PROGRAM_ID || 'YOUR_MEMECOIN_PROGRAM_ID'
 };
 
 // Minimal IDL for solitaire program
@@ -230,12 +230,12 @@ app.get('/api/games/stats', (req, res) => {
 app.get('/api/tokens', (req, res) => {
   res.json({
     gamingToken: {
-      address: process.env.GAMING_TOKEN_ADDRESS || '2M4qUmbTiSRtRmfRcnZFWQyNXqkeQ4c9TzCdC7d6svPD',
+      address: process.env.GAMING_TOKEN_ADDRESS || 'your-gaming-token-mint-address',
       symbol: 'SOL-IT',
       name: 'Solitaire Gaming Token'
     },
     memecoin: {
-      address: process.env.MEMECOIN_ADDRESS || '6ygxtUVufLvihkSm4xv3Ny42ocRmwbMHaJ23kiovFKiH',
+      address: process.env.MEMECOIN_ADDRESS || 'your-memecoin-mint-address',
       symbol: 'SOL-COIN',
       name: 'Solitaire Memecoin'
     }
