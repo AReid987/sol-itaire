@@ -17,6 +17,10 @@ ignore:
 # These are Solana program IDs and token addresses that are public information
 allowlist:
   matches:
+    # Solana Gaming Token address (devnet)
+    - "2M4qUmbTiSRtRmfRcnZFWQyNXqkeQ4c9TzCdC7d6svPD"
+    # Solana Memecoin address (devnet)
+    - "6ygxtUVufLvihkSm4xv3Ny42ocRmwbMHaJ23kiovFKiH"
     # Solana program IDs and token addresses (base58 strings)
     - pattern: '[1-9A-HJ-NP-Za-km-z]{32,44}'
       paths:
@@ -27,12 +31,18 @@ allowlist:
         - "apps/web/src/components/game/DevnetHelper.tsx"
         - "apps/backend/.env.example"
         - "sol_itaire/.env.example"
-      secret_types: ["Generic Secret", "API Key", "Auth Token"]
+      secret_types: ["Generic Secret", "API Key", "Auth Token", "Generic High Entropy Secret"]
 
 # Configure specific detectors to be less strict for example files
 detectors:
   Generic Secret:
-    ignore_entropy_threshold: true  # Ignore entropy-based detection for listed paths
+    ignore_entropy_threshold: true
+    paths:
+      - "**.env.example"
+      - "**.env.local.example"
+      - "**.env.production.example"
+  Generic High Entropy Secret:
+    ignore_entropy_threshold: true
     paths:
       - "**.env.example"
       - "**.env.local.example"
@@ -54,12 +64,12 @@ detectors:
 excludes:
   # Ignore obvious placeholder values
   - match: 'your-.*-here'
-    secret_types: ["Generic Secret", "API Key", "Auth Token"]
+    secret_types: ["Generic Secret", "API Key", "Auth Token", "Generic High Entropy Secret"]
   - match: 'your_.*_here'
-    secret_types: ["Generic Secret", "API Key", "Auth Token"]
+    secret_types: ["Generic Secret", "API Key", "Auth Token", "Generic High Entropy Secret"]
   - match: '.*-for-testing-only'
-    secret_types: ["Generic Secret", "API Key", "Auth Token"]
+    secret_types: ["Generic Secret", "API Key", "Auth Token", "Generic High Entropy Secret"]
   - match: 'example\.com'
-    secret_types: ["Generic Secret", "API Key", "Auth Token"]
+    secret_types: ["Generic Secret", "API Key", "Auth Token", "Generic High Entropy Secret"]
   - match: 'https://your-domain\.vercel\.app'
-    secret_types: ["Generic Secret", "API Key", "Auth Token"]
+    secret_types: ["Generic Secret", "API Key", "Auth Token", "Generic High Entropy Secret"]
