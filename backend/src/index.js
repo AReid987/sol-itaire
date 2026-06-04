@@ -291,12 +291,12 @@ app.get('/api/games/stats', (req, res) => {
 app.get('/api/tokens', (req, res) => {
   res.json({
     gamingToken: {
-      address: process.env.GAMING_TOKEN_MINT_ADDRESS || PROGRAM_IDS.gaming_token,
+      address: process.env.GAMING_TOKEN_MINT_ADDRESS || '<GAMING-TOKEN-MINT-ADDRESS>',
       symbol: 'SOL-IT',
       name: 'Solitaire Gaming Token'
     },
     memecoin: {
-      address: process.env.MEMECOIN_MINT_ADDRESS || PROGRAM_IDS.memecoin,
+      address: process.env.MEMECOIN_MINT_ADDRESS || '<MEMECOIN-MINT-ADDRESS>',
       symbol: 'SOL-COIN',
       name: 'Solitaire Memecoin'
     }
