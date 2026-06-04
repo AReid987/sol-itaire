@@ -1,0 +1,16 @@
+# GitGuardian configuration to exclude known public addresses
+# These are Solana devnet token addresses (public keys), not secrets
+
+allowlist:
+  # Solana Gaming Token address (devnet)
+  - "2M4qUmbTiSRtRmfRcnZFWQyNXqkeQ4c9TzCdC7d6svPD"
+  # Solana Memecoin address (devnet)
+  - "6ygxtUVufLvihkSm4xv3Ny42ocRmwbMHaJ23kiovFKiH"
+  # Generic pattern for Solana addresses (base58, 32-44 chars)
+  - regex: "^[1-9A-HJ-NP-Za-km-z]{32,44}$"
+    description: "Solana public key addresses"
+
+# Optional: ignore specific files
+# paths-ignore:
+#   - "backend/.env.example"
+#   - "backend/src/index.js"
