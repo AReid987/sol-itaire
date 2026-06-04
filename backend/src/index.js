@@ -21,7 +21,7 @@ app.use(express.json());
 // ===================================================================
 const PROGRAM_IDS = {
   solitaire: 'Fg6PaFpoGXkYsidMpWTK6W2BeZ7FEfcYkg476zPFsLnS',
-  gamingToken: 'DhkqYC1mAnZ41dgPz6NDLovGM6zxE1j7wHLBAizYkNB8',
+  gamingToken: 'DhkqYC1mAnZ41dgPz6NDLovGM6zxE1j7wHLBAizYkNB8', // gitguardian-ignore: line
   memecoin: 'A1WF2rG5Vs5tG6nhq2ZeDEN9hyESrWV3dtyq1XdBWkqT'
 };
 
