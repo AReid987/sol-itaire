@@ -10,10 +10,10 @@ interface StakeModalProps {
   onStake: (amount: number) => Promise<void>
   stakeAmount: number
   onStakeAmountChange: (amount: number) => void
+  isLoading?: boolean
 }
 
-export function StakeModal({ isOpen, onClose, onStake, stakeAmount, onStakeAmountChange }: StakeModalProps) {
-  const [stating, setStating] = useState(false)
+export function StakeModal({ isOpen, onClose, onStake, stakeAmount, onStakeAmountChange, isLoading = false }: StakeModalProps) {
   const { balance } = useSolana()
 
   const presetAmounts = useMemo(() => [50, 100, 250, 500, 1000], [])
@@ -22,16 +22,13 @@ export function StakeModal({ isOpen, onClose, onStake, stakeAmount, onStakeAmoun
   if (!isOpen) return null
 
   const handleStake = async () => {
-    if (stating) return
-    setStating(true)
+    if (isLoading) return
 
     try {
       await onStake(stakeAmount)
       onClose()
     } catch (error) {
       console.error("Stake failed", error)
-    } finally {
-      setStating(false)
     }
   }
 
@@ -74,7 +71,8 @@ export function StakeModal({ isOpen, onClose, onStake, stakeAmount, onStakeAmoun
               value={stakeAmount}
               onChange={event => onStakeAmountChange(Number(event.target.value))}
               min="1"
-              className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              disabled={isLoading}
+              className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:opacity-50"
             />
             <span className="text-gray-500">GAME</span>
           </div>
@@ -90,7 +88,7 @@ export function StakeModal({ isOpen, onClose, onStake, stakeAmount, onStakeAmoun
               <button
                 key={amount}
                 onClick={() => onStakeAmountChange(amount)}
-                disabled={amount > balance.game}
+                disabled={amount > balance.game || isLoading}
                 className={`px-3 py-2 rounded-lg font-medium transition-colors duration-200 ${
                   stakeAmount === amount
                     ? 'bg-blue-600 text-white'
@@ -117,16 +115,17 @@ export function StakeModal({ isOpen, onClose, onStake, stakeAmount, onStakeAmoun
         <div className="flex space-x-3">
           <button
             onClick={onClose}
-            className="flex-1 px-4 py-2 border border-gray-300 text-gray-700 rounded-lg font-medium hover:bg-gray-50 transition-colors duration-200"
+            disabled={isLoading}
+            className="flex-1 px-4 py-2 border border-gray-300 text-gray-700 rounded-lg font-medium hover:bg-gray-50 transition-colors duration-200 disabled:opacity-50"
           >
             Cancel
           </button>
           <button
             onClick={handleStake}
-            disabled={stating || insufficientBalance || stakeAmount <= 0}
+            disabled={isLoading || insufficientBalance || stakeAmount <= 0}
             className="flex-1 px-4 py-2 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg font-medium hover:from-blue-700 hover:to-purple-700 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            {stating ? 'Staking...' : 'Stake & Play'}
+            {isLoading ? 'Staking...' : 'Stake & Play'}
           </button>
         </div>
       </motion.div>

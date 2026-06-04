@@ -294,19 +294,11 @@ export function useSolana() {
           [Buffer.from('reward_vault'), GAMING_TOKEN_MINT.toBuffer()],
           GAMING_TOKEN_PROGRAM_ID
         )
-        const [vaultAuthority] = await PublicKey.findProgramAddress(
-          [Buffer.from('vault_authority'), GAMING_TOKEN_MINT.toBuffer()],
-          GAMING_TOKEN_PROGRAM_ID
-        )
-        const [rewardVaultAuthority] = await PublicKey.findProgramAddress(
-          [Buffer.from('reward_vault_authority'), GAMING_TOKEN_MINT.toBuffer()],
-          GAMING_TOKEN_PROGRAM_ID
-        )
 
         const data = Buffer.concat([
-          Buffer.from([1]),
+          encodeU8(1),
           encodeU64(BigInt(Math.floor(amount * Math.pow(10, 9)))),
-          encodeU64(BigInt(7 * 24 * 60 * 60)),
+          encodeI64(BigInt(7 * 24 * 60 * 60)),
         ])
 
         const stakeTokensIx = new TransactionInstruction({
@@ -315,8 +307,6 @@ export function useSolana() {
             { pubkey: stakeAccount, isSigner: false, isWritable: true },
             { pubkey: stakeVault, isSigner: false, isWritable: true },
             { pubkey: rewardVault, isSigner: false, isWritable: true },
-            { pubkey: vaultAuthority, isSigner: false, isWritable: false },
-            { pubkey: rewardVaultAuthority, isSigner: false, isWritable: false },
             { pubkey: userTokenAccount, isSigner: false, isWritable: true },
             { pubkey: GAMING_TOKEN_MINT, isSigner: false, isWritable: false },
             { pubkey: publicKey, isSigner: true, isWritable: true },
@@ -330,6 +320,7 @@ export function useSolana() {
         const signature = await sendTransaction(transaction, connection)
         await connection.confirmTransaction(signature, 'confirmed')
 
+        fetchBalances()
         setIsLoading(false)
         return signature
       } catch (err) {
@@ -339,7 +330,7 @@ export function useSolana() {
         return null
       }
     },
-    [publicKey, sendTransaction, connection]
+    [publicKey, sendTransaction, connection, fetchBalances]
   )
 
   const claimRewards = useCallback(
@@ -357,17 +348,15 @@ export function useSolana() {
           [Buffer.from('memecoin_config'), MEMECOIN_MINT.toBuffer()],
           MEMECOIN_PROGRAM_ID
         )
-        const rewardsAuthority = memecoinConfig
         const gameRewardsAccount = await getAssociatedTokenAddress(
           MEMECOIN_MINT,
-          rewardsAuthority,
-          true
+          publicKey
         )
         const playerAccount = await getAssociatedTokenAddress(MEMECOIN_MINT, publicKey)
 
         const gameIdBytes = Buffer.from(gameId)
         const data = Buffer.concat([
-          Buffer.from([5]),
+          encodeU8(3),
           publicKey.toBuffer(),
           Buffer.from([gameIdBytes.length]),
           gameIdBytes,
@@ -378,10 +367,9 @@ export function useSolana() {
           programId: MEMECOIN_PROGRAM_ID,
           keys: [
             { pubkey: memecoinConfig, isSigner: false, isWritable: true },
+            { pubkey: publicKey, isSigner: true, isWritable: true },
             { pubkey: gameRewardsAccount, isSigner: false, isWritable: true },
             { pubkey: playerAccount, isSigner: false, isWritable: true },
-            { pubkey: rewardsAuthority, isSigner: false, isWritable: false },
-            { pubkey: publicKey, isSigner: true, isWritable: true },
             { pubkey: MEMECOIN_MINT, isSigner: false, isWritable: false },
             { pubkey: TOKEN_PROGRAM_ID, isSigner: false, isWritable: false },
             { pubkey: SystemProgram.programId, isSigner: false, isWritable: false },
@@ -393,6 +381,7 @@ export function useSolana() {
         const signature = await sendTransaction(transaction, connection)
         await connection.confirmTransaction(signature, 'confirmed')
 
+        fetchBalances()
         setIsLoading(false)
         return signature
       } catch (err) {
@@ -402,7 +391,7 @@ export function useSolana() {
         return null
       }
     },
-    [publicKey, sendTransaction, connection]
+    [publicKey, sendTransaction, connection, fetchBalances]
   )
 
   const withdrawStake = useCallback(
@@ -432,7 +421,7 @@ export function useSolana() {
         const userTokenAccount = await getAssociatedTokenAddress(GAMING_TOKEN_MINT, publicKey)
 
         const data = Buffer.concat([
-          Buffer.from([3])
+          encodeU8(3)
         ])
 
         const withdrawStakeIx = new TransactionInstruction({
@@ -452,6 +441,7 @@ export function useSolana() {
         const signature = await sendTransaction(transaction, connection)
         await connection.confirmTransaction(signature, 'confirmed')
 
+        fetchBalances()
         setIsLoading(false)
         return signature
       } catch (err) {
@@ -461,7 +451,7 @@ export function useSolana() {
         return null
       }
     },
-    [publicKey, sendTransaction, connection, deriveGameSeeds, deriveEscrowAuthority]
+    [publicKey, sendTransaction, connection, deriveGameSeeds, deriveEscrowAuthority, fetchBalances]
   )
 
   return {
@@ -485,6 +475,12 @@ export function useSolana() {
 function encodeU64(value: bigint): Buffer {
   const buf = Buffer.alloc(8)
   buf.writeBigUInt64LE(value)
+  return buf
+}
+
+function encodeI64(value: bigint): Buffer {
+  const buf = Buffer.alloc(8)
+  buf.writeBigInt64LE(value)
   return buf
 }
 

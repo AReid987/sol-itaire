@@ -1,9 +1,6 @@
 'use client'
 
-import { useConnection, useWallet } from '@solana/wallet-adapter-react'
 import { useEffect, useState } from 'react'
-import { PublicKey } from '@solana/web3.js'
-import { getAccount, getAssociatedTokenAddress } from '@solana/spl-token'
 import { motion } from 'framer-motion'
 import { GAMING_TOKEN_MINT, MEMECOIN_MINT, useSolana } from '@/hooks/useSolana'
 
@@ -16,14 +13,10 @@ interface TokenBalance {
 }
 
 export function TokenBalances() {
-  const { connection } = useConnection()
-  const { publicKey } = useWallet()
-  const { fetchBalances, balance } = useSolana()
+  const { fetchBalances, balance, isLoading } = useSolana()
   const [loading, setLoading] = useState(false)
 
   useEffect(() => {
-    if (!publicKey) return
-
     const fetchAllBalances = async () => {
       setLoading(true)
       await fetchBalances()
@@ -31,7 +24,7 @@ export function TokenBalances() {
     }
 
     fetchAllBalances()
-  }, [publicKey, fetchBalances])
+  }, [fetchBalances])
 
   const balances: TokenBalance[] = [
     {
@@ -50,7 +43,7 @@ export function TokenBalances() {
     },
   ]
 
-  if (loading) {
+  if (loading || isLoading) {
     return (
       <div className="flex items-center space-x-2">
         <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
@@ -78,7 +71,7 @@ export function TokenBalances() {
             <div>
               <p className="text-white font-medium text-sm">{token.symbol}</p>
               <p className="text-gray-300 text-xs">
-                {token.balance.toLocaleString()} {token.name}
+                {token.balance > 0 ? token.balance.toLocaleString() : '0'} tokens
               </p>
             </div>
           </div>

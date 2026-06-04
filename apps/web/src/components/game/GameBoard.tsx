@@ -9,7 +9,9 @@ import { CardPile } from './CardPile'
 import { GameControls } from './GameControls'
 import { StakeModal } from './StakeModal'
 import { DevnetHelper } from './DevnetHelper'
+import { RewardsModal } from './RewardsModal'
 import { useWallet } from '@solana/wallet-adapter-react'
+import { useSolana } from '@/hooks/useSolana'
 
 interface GameBoardProps {
   onGameEnd: () => void
@@ -17,6 +19,7 @@ interface GameBoardProps {
 
 export function GameBoard({ onGameEnd }: GameBoardProps) {
   const { publicKey } = useWallet()
+  const { initializeGame, completeGame, claimRewards, isLoading: solanaLoading, error } = useSolana()
   const [gameState, setGameState] = useState({
     piles: {} as Record<string, Pile>,
     moves: 0,
@@ -27,16 +30,17 @@ export function GameBoard({ onGameEnd }: GameBoardProps) {
   const [selectedCard, setSelectedCard] = useState<{ pileId: string; cardIndex: number } | null>(null)
   const [showStakeModal, setShowStakeModal] = useState(true)
   const [showDevnetHelper, setShowDevnetHelper] = useState(false)
+  const [showRewardsModal, setShowRewardsModal] = useState(false)
+  const [isProcessingTransaction, setIsProcessingTransaction] = useState(false)
+  const [transactionError, setTransactionError] = useState<string | null>(null)
   const [stakeAmount, setStakeAmount] = useState(100)
   const [gameId, setGameId] = useState<string>('')
 
-  // Initialize game
   useEffect(() => {
     if (!showStakeModal) {
       const deck = createDeck()
       const piles: Record<string, Pile> = {}
 
-      // Initialize tableau piles (7 piles)
       for (let i = 0; i < 7; i++) {
         const tableauCards: Card[] = []
         for (let j = 0; j <= i; j++) {
@@ -53,7 +57,6 @@ export function GameBoard({ onGameEnd }: GameBoardProps) {
         }
       }
 
-      // Initialize foundation piles (4 piles)
       for (let i = 0; i < 4; i++) {
         piles[`foundation-${i}`] = {
           cards: [],
@@ -62,7 +65,6 @@ export function GameBoard({ onGameEnd }: GameBoardProps) {
         }
       }
 
-      // Initialize stock pile
       deck.forEach(card => card.faceUp = false)
       piles['stock'] = {
         cards: deck,
@@ -70,14 +72,12 @@ export function GameBoard({ onGameEnd }: GameBoardProps) {
         id: 'stock'
       }
 
-      // Initialize waste pile
       piles['waste'] = {
         cards: [],
         type: 'waste',
         id: 'waste'
       }
 
-      // Generate game ID
       const newGameId = `${publicKey?.toBase58()}-${Date.now()}`
       setGameId(newGameId)
 
@@ -98,17 +98,14 @@ export function GameBoard({ onGameEnd }: GameBoardProps) {
     if (!card || !card.faceUp) return
 
     if (selectedCard && selectedCard.pileId === pileId && selectedCard.cardIndex === cardIndex) {
-      // Deselect if clicking the same card
       setSelectedCard(null)
       return
     }
 
     if (selectedCard) {
-      // Try to move the selected card to this pile
       handleMove(selectedCard.pileId, selectedCard.cardIndex, pileId)
       setSelectedCard(null)
     } else {
-      // Select this card
       setSelectedCard({ pileId, cardIndex })
     }
   }
@@ -120,7 +117,6 @@ export function GameBoard({ onGameEnd }: GameBoardProps) {
 
     if (!card || !card.faceUp) return
 
-    // Validate move
     let isValidMove = false
 
     if (toPile.type === 'tableau') {
@@ -131,12 +127,10 @@ export function GameBoard({ onGameEnd }: GameBoardProps) {
     }
 
     if (isValidMove) {
-      // Execute move
       const newPiles = { ...gameState.piles }
       const movedCards = newPiles[fromPileId].cards.splice(fromCardIndex)
       newPiles[toPileId].cards.push(...movedCards)
 
-      // Flip the new top card of the from pile if it's a tableau pile
       if (fromPile.type === 'tableau' && newPiles[fromPileId].cards.length > 0) {
         const topCard = newPiles[fromPileId].cards[newPiles[fromPileId].cards.length - 1]
         if (!topCard.faceUp) {
@@ -144,7 +138,6 @@ export function GameBoard({ onGameEnd }: GameBoardProps) {
         }
       }
 
-      // Update game state
       const newMoves = gameState.moves + 1
       const newScore = calculateScore(newPiles, newMoves, gameState.startTime)
       const isWon = checkWinCondition(newPiles)
@@ -157,10 +150,9 @@ export function GameBoard({ onGameEnd }: GameBoardProps) {
         isWon,
       })
 
-      // Check for win
       if (isWon) {
         setTimeout(() => {
-          handleGameComplete(true)
+          setGameState(prev => ({ ...prev, isWon: true }))
         }, 1000)
       }
     }
@@ -171,7 +163,6 @@ export function GameBoard({ onGameEnd }: GameBoardProps) {
     const wastePile = gameState.piles['waste']
 
     if (stockPile.cards.length === 0) {
-      // Reset stock from waste
       if (wastePile.cards.length > 0) {
         const newPiles = { ...gameState.piles }
         const wasteCards = newPiles['waste'].cards.splice(0)
@@ -185,9 +176,8 @@ export function GameBoard({ onGameEnd }: GameBoardProps) {
         })
       }
     } else {
-      // Draw cards from stock to waste
       const newPiles = { ...gameState.piles }
-      const drawnCards = newPiles['stock'].cards.splice(-3) // Draw 3 cards
+      const drawnCards = newPiles['stock'].cards.splice(-3)
       drawnCards.forEach(card => card.faceUp = true)
       newPiles['waste'].cards.push(...drawnCards)
 
@@ -202,19 +192,15 @@ export function GameBoard({ onGameEnd }: GameBoardProps) {
   const calculateScore = (piles: Record<string, Pile>, moves: number, startTime: number) => {
     let score = 0
 
-    // Foundation cards give points
     Object.values(piles)
       .filter(pile => pile.type === 'foundation')
       .forEach(pile => {
         score += pile.cards.length * 10
       })
 
-    // Time bonus
     const timeTaken = Date.now() - startTime
     const timeBonus = Math.max(0, 1000 - Math.floor(timeTaken / 1000))
     score += timeBonus
-
-    // Move penalty
     score -= moves
 
     return Math.max(0, score)
@@ -228,24 +214,69 @@ export function GameBoard({ onGameEnd }: GameBoardProps) {
     return foundationCards === 52
   }
 
-  const handleGameComplete = (won: boolean) => {
-    // Here you would interact with the smart contract to complete the game
-    // and distribute rewards
-    console.log('Game completed:', { won, score: gameState.score, moves: gameState.moves })
-    onGameEnd()
+  const handleStake = async () => {
+    if (!publicKey) return
+
+    setIsProcessingTransaction(true)
+    setTransactionError(null)
+
+    try {
+      const result = await initializeGame(stakeAmount)
+      if (result?.signature) {
+        setShowStakeModal(false)
+      } else {
+        setTransactionError('Failed to initialize game on blockchain')
+      }
+    } catch (err) {
+      setTransactionError(err instanceof Error ? err.message : 'Failed to stake tokens')
+    } finally {
+      setIsProcessingTransaction(false)
+    }
   }
 
-  const handleStake = () => {
-    // Here you would interact with the smart contract to stake tokens
-    console.log('Staking:', { amount: stakeAmount, gameId })
-    setShowStakeModal(false)
+  const handleClaimRewards = async () => {
+    if (!gameId) return
+
+    setIsProcessingTransaction(true)
+    setTransactionError(null)
+
+    try {
+      const memecoinReward = Math.floor(gameState.score / 100)
+      const signature = await claimRewards(gameId, memecoinReward)
+      if (signature) {
+        const gameSignature = await completeGame(gameId, true, gameState.score)
+        setGameState(prev => ({ ...prev, isWon: false }))
+        onGameEnd()
+      } else {
+        setTransactionError('Failed to claim rewards')
+      }
+    } catch (err) {
+      setTransactionError(err instanceof Error ? err.message : 'Failed to claim rewards')
+    } finally {
+      setIsProcessingTransaction(false)
+    }
   }
 
   const elapsedTime = formatTime(Date.now() - gameState.startTime)
 
   return (
     <div className="game-board">
-      {/* Game Header */}
+      {(solanaLoading || isProcessingTransaction) && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-lg p-6">
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto mb-2"></div>
+            <p className="text-gray-700">Processing blockchain transaction...</p>
+          </div>
+        </div>
+      )}
+
+      {transactionError && (
+        <div className="fixed top-4 right-4 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-lg z-50">
+          <p>{transactionError}</p>
+          <button onClick={() => setTransactionError(null)} className="ml-2 text-red-500">×</button>
+        </div>
+      )}
+
       <div className="flex justify-between items-center mb-6">
         <div className="flex space-x-6">
           <div className="text-white">
@@ -268,18 +299,15 @@ export function GameBoard({ onGameEnd }: GameBoardProps) {
           </button>
           <GameControls
             onNewGame={() => setShowStakeModal(true)}
-            onUndo={() => {/* Implement undo */}}
-            onHint={() => {/* Implement hint */}}
+            onUndo={() => {}}
+            onHint={() => {}}
           />
         </div>
       </div>
 
-      {/* Game Layout */}
       <div className="space-y-8">
-        {/* Top Row: Stock, Waste, and Foundations */}
         <div className="flex justify-between">
           <div className="flex space-x-4">
-            {/* Stock Pile */}
             <div onClick={handleStockClick} className="cursor-pointer">
               <CardPile
                 pile={gameState.piles['stock']}
@@ -288,7 +316,6 @@ export function GameBoard({ onGameEnd }: GameBoardProps) {
               />
             </div>
 
-            {/* Waste Pile */}
             <CardPile
               pile={gameState.piles['waste']}
               onClick={(index) => handleCardClick('waste', index)}
@@ -296,7 +323,6 @@ export function GameBoard({ onGameEnd }: GameBoardProps) {
             />
           </div>
 
-          {/* Foundation Piles */}
           <div className="flex space-x-4">
             {Array.from({ length: 4 }, (_, i) => (
               <CardPile
@@ -309,7 +335,6 @@ export function GameBoard({ onGameEnd }: GameBoardProps) {
           </div>
         </div>
 
-        {/* Tableau Piles */}
         <div className="flex justify-center space-x-4">
           {Array.from({ length: 7 }, (_, i) => (
             <CardPile
@@ -322,7 +347,6 @@ export function GameBoard({ onGameEnd }: GameBoardProps) {
         </div>
       </div>
 
-      {/* Win Message */}
       {gameState.isWon && (
         <motion.div
           initial={{ opacity: 0, scale: 0.5 }}
@@ -335,17 +359,18 @@ export function GameBoard({ onGameEnd }: GameBoardProps) {
             <p className="text-lg font-semibold mb-6">
               Score: {gameState.score} | Moves: {gameState.moves}
             </p>
-            <button
-              onClick={() => handleGameComplete(true)}
-              className="px-6 py-3 bg-green-600 text-white rounded-lg font-semibold hover:bg-green-700"
-            >
-              Claim Rewards
-            </button>
+            <div className="flex space-x-3">
+              <button
+                onClick={() => setShowRewardsModal(true)}
+                className="flex-1 px-6 py-3 bg-green-600 text-white rounded-lg font-semibold hover:bg-green-700"
+              >
+                Claim Rewards
+              </button>
+            </div>
           </div>
         </motion.div>
       )}
 
-      {/* Stake Modal */}
       {showStakeModal && (
         <StakeModal
           isOpen={showStakeModal}
@@ -353,10 +378,21 @@ export function GameBoard({ onGameEnd }: GameBoardProps) {
           onStake={handleStake}
           stakeAmount={stakeAmount}
           onStakeAmountChange={setStakeAmount}
+          isLoading={isProcessingTransaction}
         />
       )}
 
-      {/* Devnet Helper Modal */}
+      {showRewardsModal && (
+        <RewardsModal
+          isOpen={showRewardsModal}
+          onClose={() => setShowRewardsModal(false)}
+          onClaim={handleClaimRewards}
+          score={gameState.score}
+          stakeAmount={stakeAmount}
+          isLoading={isProcessingTransaction}
+        />
+      )}
+
       {showDevnetHelper && (
         <DevnetHelper
           onClose={() => setShowDevnetHelper(false)}
