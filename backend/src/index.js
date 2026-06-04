@@ -2,8 +2,8 @@ const express = require('express');
 const cors = require('cors');
 const { Connection, PublicKey, Keypair, SystemProgram } = require('@solana/web3.js');
 const { AnchorProvider, Program, Wallet, BN } = require('@coral-xyz/anchor');
-const TOKEN_PROGRAM_ID = new PublicKey('TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA');
-const SYSVAR_RENT_PUBKEY = new PublicKey('SysvarRent111111111111111111111111111111111');
+const TOKEN_PROGRAM_ID = new PublicKey('TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA'); # gitguardian-ignore: line
+const SYSVAR_RENT_PUBKEY = new PublicKey('SysvarRent111111111111111111111111111111111'); # gitguardian-ignore: line
 const { MongoClient } = require('mongodb');
 const fs = require('fs');
 const path = require('path');
@@ -22,7 +22,7 @@ app.use(express.json());
 const PROGRAM_IDS = {
   solitaire: process.env.SOLITAIRE_PROGRAM_ID || 'Fg6PaFpoGXkYsidMpWTK6W2BeZ7FEfcYkg476zPFsLnS',
   gamingToken: process.env.GAMING_TOKEN_PROGRAM_ID || 'DhkqYC1mAnZ41dgPz6NDLovGM6zxE1j7wHLBAizYkNB8', // gitguardian-ignore: line
-  memecoin: process.env.MEMECOIN_PROGRAM_ID || 'A1WF2rG5Vs5tG6nhq2ZeDEN9hyESrWV3dtyq1XdBWkqT'
+  memecoin: process.env.MEMECOIN_PROGRAM_ID || 'A1WF2rG5Vs5tG6nhq2ZeDEN9hyESrWV3dtyq1XdBWkqT' # gitguardian-ignore: line
 };
 
 // ===================================================================
