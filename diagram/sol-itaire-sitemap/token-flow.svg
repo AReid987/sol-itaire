@@ -1,0 +1,198 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 800">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&amp;display=swap');
+    text { font-family: 'JetBrains Mono', 'SF Mono', 'Cascadia Code', monospace; }
+  </style>
+
+  <defs>
+    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#1e293b" stroke-width="0.5"/>
+    </pattern>
+    <marker id="arrow-cyan" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#22d3ee"/>
+    </marker>
+    <marker id="arrow-emerald" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#34d399"/>
+    </marker>
+    <marker id="arrow-amber" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#fbbf24"/>
+    </marker>
+    <marker id="arrow-rose" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#fb7185"/>
+    </marker>
+    <marker id="arrow-violet" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#a78bfa"/>
+    </marker>
+  </defs>
+
+  <!-- Background -->
+  <rect width="100%" height="100%" fill="#0f172a"/>
+  <rect width="100%" height="100%" fill="url(#grid)"/>
+
+  <!-- Title -->
+  <text x="550" y="35" fill="white" font-size="18" font-weight="700" text-anchor="middle">Sol-itaire Token Flow</text>
+  <text x="550" y="52" fill="#94a3b8" font-size="10" text-anchor="middle">GAME + MEME Token Economics</text>
+
+  <!-- ==================== PLAYER WALLET ==================== -->
+  <rect x="420" y="80" width="260" height="80" rx="12" fill="#0f172a"/>
+  <rect x="420" y="80" width="260" height="80" rx="12" fill="rgba(8,51,68,0.4)" stroke="#22d3ee" stroke-width="2"/>
+  <text x="550" y="110" fill="white" font-size="14" font-weight="700" text-anchor="middle">Player Wallet</text>
+  <text x="550" y="128" fill="#94a3b8" font-size="10" text-anchor="middle">Phantom / Solflare / Backpack</text>
+  <text x="550" y="145" fill="#22d3ee" font-size="9" text-anchor="middle">SOL + GAME + MEME</text>
+
+  <!-- ==================== GAME TOKEN FLOW ==================== -->
+  <rect x="30" y="190" width="520" height="280" rx="12" fill="none" stroke="#fbbf24" stroke-width="1" stroke-dasharray="8,4"/>
+  <text x="45" y="210" fill="#fbbf24" font-size="10" font-weight="600">GAME TOKEN FLOW</text>
+
+  <!-- Stake Flow -->
+  <rect x="60" y="230" width="160" height="60" rx="6" fill="#0f172a"/>
+  <rect x="60" y="230" width="160" height="60" rx="6" fill="rgba(59,130,246,0.3)" stroke="#60a5fa" stroke-width="1.5"/>
+  <text x="140" y="255" fill="white" font-size="11" font-weight="600" text-anchor="middle">Stake GAME</text>
+  <text x="140" y="272" fill="#94a3b8" font-size="9" text-anchor="middle">50-1000 tokens</text>
+
+  <!-- Arrow from wallet to stake -->
+  <path d="M 480 160 L 480 200 L 140 200 L 140 230" fill="none" stroke="#60a5fa" stroke-width="1.5" marker-end="url(#arrow-cyan)"/>
+  <text x="310" y="195" fill="#60a5fa" font-size="8" text-anchor="middle">Sign TX</text>
+
+  <!-- Escrow -->
+  <rect x="280" y="230" width="160" height="60" rx="6" fill="#0f172a"/>
+  <rect x="280" y="230" width="160" height="60" rx="6" fill="rgba(76,29,149,0.4)" stroke="#a78bfa" stroke-width="1.5"/>
+  <text x="360" y="255" fill="white" font-size="11" font-weight="600" text-anchor="middle">Escrow</text>
+  <text x="360" y="272" fill="#94a3b8" font-size="9" text-anchor="middle">Held during game</text>
+
+  <line x1="220" y1="260" x2="280" y2="260" stroke="#60a5fa" stroke-width="1.5" marker-end="url(#arrow-cyan)"/>
+
+  <!-- Win Return -->
+  <rect x="60" y="330" width="160" height="50" rx="6" fill="#0f172a"/>
+  <rect x="60" y="330" width="160" height="50" rx="6" fill="rgba(6,78,59,0.4)" stroke="#34d399" stroke-width="1.5"/>
+  <text x="140" y="353" fill="white" font-size="11" font-weight="600" text-anchor="middle">Win: 2x Return</text>
+  <text x="140" y="368" fill="#34d399" font-size="9" text-anchor="middle">+ MEME bonus</text>
+
+  <!-- Lose Return -->
+  <rect x="280" y="330" width="160" height="50" rx="6" fill="#0f172a"/>
+  <rect x="280" y="330" width="160" height="50" rx="6" fill="rgba(136,19,55,0.4)" stroke="#fb7185" stroke-width="1.5"/>
+  <text x="360" y="353" fill="white" font-size="11" font-weight="600" text-anchor="middle">Lose: 0% Return</text>
+  <text x="360" y="368" fill="#fb7185" font-size="9" text-anchor="middle">Stake burned</text>
+
+  <!-- Arrows from escrow -->
+  <path d="M 300 290 L 140 290 L 140 330" fill="none" stroke="#34d399" stroke-width="1.5" marker-end="url(#arrow-emerald)"/>
+  <text x="200" y="285" fill="#34d399" font-size="8" text-anchor="middle">Win</text>
+
+  <path d="M 420 290 L 360 290 L 360 330" fill="none" stroke="#fb7185" stroke-width="1.5" marker-end="url(#arrow-rose)"/>
+  <text x="390" y="285" fill="#fb7185" font-size="8" text-anchor="middle">Lose</text>
+
+  <!-- Return to wallet -->
+  <path d="M 140 380 L 140 420 L 550 420 L 550 160" fill="none" stroke="#34d399" stroke-width="1.5" marker-end="url(#arrow-emerald)"/>
+  <text x="340" y="415" fill="#34d399" font-size="8" text-anchor="middle">GAME + MEME rewards</text>
+
+  <!-- Abandon path -->
+  <rect x="60" y="400" width="160" height="50" rx="6" fill="#0f172a"/>
+  <rect x="60" y="400" width="160" height="50" rx="6" fill="rgba(251,146,60,0.3)" stroke="#fb923c" stroke-width="1.5"/>
+  <text x="140" y="423" fill="white" font-size="11" font-weight="600" text-anchor="middle">Abandon: 90%</text>
+  <text x="140" y="438" fill="#fb923c" font-size="9" text-anchor="middle">24h cooldown</text>
+
+  <path d="M 340 290 L 340 310 L 140 310 L 140 400" fill="none" stroke="#fb923c" stroke-width="1" stroke-dasharray="4,3" marker-end="url(#arrow-amber)"/>
+
+  <!-- ==================== MEME TOKEN FLOW ==================== -->
+  <rect x="570" y="190" width="500" height="280" rx="12" fill="none" stroke="#a78bfa" stroke-width="1" stroke-dasharray="8,4"/>
+  <text x="585" y="210" fill="#a78bfa" font-size="10" font-weight="600">MEME TOKEN FLOW</text>
+
+  <!-- Memecoin Program -->
+  <rect x="730" y="230" width="180" height="60" rx="6" fill="#0f172a"/>
+  <rect x="730" y="230" width="180" height="60" rx="6" fill="rgba(76,29,149,0.4)" stroke="#a78bfa" stroke-width="1.5"/>
+  <text x="820" y="255" fill="white" font-size="11" font-weight="600" text-anchor="middle">Memecoin Program</text>
+  <text x="820" y="272" fill="#94a3b8" font-size="9" text-anchor="middle">Reward Distribution</text>
+
+  <!-- Game Rewards -->
+  <rect x="600" y="330" width="140" height="50" rx="6" fill="#0f172a"/>
+  <rect x="600" y="330" width="140" height="50" rx="6" fill="rgba(6,78,59,0.4)" stroke="#34d399" stroke-width="1.5"/>
+  <text x="670" y="353" fill="white" font-size="10" font-weight="600" text-anchor="middle">Game Rewards</text>
+  <text x="670" y="368" fill="#34d399" font-size="8" text-anchor="middle">40% allocation</text>
+
+  <!-- Airdrops -->
+  <rect x="760" y="330" width="140" height="50" rx="6" fill="#0f172a"/>
+  <rect x="760" y="330" width="140" height="50" rx="6" fill="rgba(6,78,59,0.4)" stroke="#34d399" stroke-width="1.5"/>
+  <text x="830" y="353" fill="white" font-size="10" font-weight="600" text-anchor="middle">Airdrops</text>
+  <text x="830" y="368" fill="#34d399" font-size="8" text-anchor="middle">25% allocation</text>
+
+  <!-- Liquidity -->
+  <rect x="920" y="330" width="130" height="50" rx="6" fill="#0f172a"/>
+  <rect x="920" y="330" width="130" height="50" rx="6" fill="rgba(120,53,15,0.3)" stroke="#fbbf24" stroke-width="1.5"/>
+  <text x="985" y="353" fill="white" font-size="10" font-weight="600" text-anchor="middle">Liquidity</text>
+  <text x="985" y="368" fill="#fbbf24" font-size="8" text-anchor="middle">20% allocation</text>
+
+  <!-- Arrows from Memecoin -->
+  <line x1="770" y1="290" x2="670" y2="330" stroke="#34d399" stroke-width="1.5" marker-end="url(#arrow-emerald)"/>
+  <line x1="820" y1="290" x2="830" y2="330" stroke="#34d399" stroke-width="1.5" marker-end="url(#arrow-emerald)"/>
+  <line x1="870" y1="290" x2="985" y2="330" stroke="#fbbf24" stroke-width="1.5" marker-end="url(#arrow-amber)"/>
+
+  <!-- Distribution Pie -->
+  <rect x="600" y="400" width="450" height="55" rx="6" fill="#0f172a" stroke="#334155" stroke-width="1"/>
+  <text x="620" y="420" fill="white" font-size="9" font-weight="600">Distribution:</text>
+  <rect x="620" y="430" width="80" height="12" rx="2" fill="rgba(6,78,59,0.6)"/>
+  <text x="706" y="440" fill="#94a3b8" font-size="8">Rewards 40%</text>
+  <rect x="760" y="430" width="50" height="12" rx="2" fill="rgba(6,78,59,0.4)"/>
+  <text x="816" y="440" fill="#94a3b8" font-size="8">Airdrop 25%</text>
+  <rect x="870" y="430" width="40" height="12" rx="2" fill="rgba(120,53,15,0.4)"/>
+  <text x="916" y="440" fill="#94a3b8" font-size="8">LP 20%</text>
+  <rect x="930" y="430" width="20" height="12" rx="2" fill="rgba(136,19,55,0.4)"/>
+  <text x="956" y="440" fill="#94a3b8" font-size="8">Team 10%</text>
+  <rect x="970" y="430" width="10" height="12" rx="2" fill="rgba(100,116,139,0.4)"/>
+  <text x="986" y="440" fill="#94a3b8" font-size="8">Mkt 5%</text>
+
+  <!-- ==================== STAKING REWARDS ==================== -->
+  <rect x="30" y="500" width="1040" height="130" rx="12" fill="none" stroke="#34d399" stroke-width="1" stroke-dasharray="8,4"/>
+  <text x="45" y="520" fill="#34d399" font-size="10" font-weight="600">STAKING REWARDS (Gaming Token Program)</text>
+
+  <!-- Stake Account -->
+  <rect x="60" y="540" width="200" height="70" rx="6" fill="#0f172a"/>
+  <rect x="60" y="540" width="200" height="70" rx="6" fill="rgba(76,29,149,0.4)" stroke="#a78bfa" stroke-width="1.5"/>
+  <text x="160" y="565" fill="white" font-size="11" font-weight="600" text-anchor="middle">Stake Account</text>
+  <text x="160" y="582" fill="#94a3b8" font-size="9" text-anchor="middle">amount + APY + timestamp</text>
+  <text x="160" y="598" fill="#a78bfa" font-size="8" text-anchor="middle">5% APY (500 basis points)</text>
+
+  <!-- Reward Calculation -->
+  <rect x="320" y="540" width="200" height="70" rx="6" fill="#0f172a"/>
+  <rect x="320" y="540" width="200" height="70" rx="6" fill="rgba(6,78,59,0.4)" stroke="#34d399" stroke-width="1.5"/>
+  <text x="420" y="565" fill="white" font-size="11" font-weight="600" text-anchor="middle">Reward Calc</text>
+  <text x="420" y="582" fill="#94a3b8" font-size="9" text-anchor="middle">amount × APY × time</text>
+  <text x="420" y="598" fill="#34d399" font-size="8" text-anchor="middle">Compound interest</text>
+
+  <!-- Claim -->
+  <rect x="580" y="540" width="200" height="70" rx="6" fill="#0f172a"/>
+  <rect x="580" y="540" width="200" height="70" rx="6" fill="rgba(59,130,246,0.3)" stroke="#60a5fa" stroke-width="1.5"/>
+  <text x="680" y="565" fill="white" font-size="11" font-weight="600" text-anchor="middle">Claim Rewards</text>
+  <text x="680" y="582" fill="#94a3b8" font-size="9" text-anchor="middle">Mint new GAME tokens</text>
+  <text x="680" y="598" fill="#60a5fa" font-size="8" text-anchor="middle">Sign transaction</text>
+
+  <!-- Arrows -->
+  <line x1="260" y1="575" x2="320" y2="575" stroke="#a78bfa" stroke-width="1.5" marker-end="url(#arrow-violet)"/>
+  <line x1="520" y1="575" x2="580" y2="575" stroke="#34d399" stroke-width="1.5" marker-end="url(#arrow-emerald)"/>
+
+  <!-- Return to wallet -->
+  <path d="M 680 610 L 680 650 L 550 650 L 550 160" fill="none" stroke="#60a5fa" stroke-width="1.5" marker-end="url(#arrow-cyan)"/>
+  <text x="620" y="645" fill="#60a5fa" font-size="8" text-anchor="middle">GAME rewards</text>
+
+  <!-- ==================== LEGEND ==================== -->
+  <rect x="30" y="660" width="1040" height="120" rx="8" fill="#0f172a" stroke="#334155" stroke-width="1"/>
+  <text x="50" y="680" fill="white" font-size="10" font-weight="600">Token Types &amp; Flows</text>
+
+  <rect x="50" y="695" width="12" height="12" rx="2" fill="rgba(59,130,246,0.3)" stroke="#60a5fa" stroke-width="1.5"/>
+  <text x="70" y="705" fill="#94a3b8" font-size="9">GAME Token — SPL token for staking &amp; gameplay</text>
+
+  <rect x="50" y="715" width="12" height="12" rx="2" fill="rgba(76,29,149,0.4)" stroke="#a78bfa" stroke-width="1.5"/>
+  <text x="70" y="725" fill="#94a3b8" font-size="9">MEME Token — Reward memecoin for wins &amp; airdrops</text>
+
+  <rect x="50" y="735" width="12" height="12" rx="2" fill="rgba(6,78,59,0.4)" stroke="#34d399" stroke-width="1.5"/>
+  <text x="70" y="745" fill="#94a3b8" font-size="9">Win Flow — 2x stake + MEME bonus returned</text>
+
+  <rect x="500" y="695" width="12" height="12" rx="2" fill="rgba(136,19,55,0.4)" stroke="#fb7185" stroke-width="1.5"/>
+  <text x="520" y="705" fill="#94a3b8" font-size="9">Lose Flow — Stake burned (0% return)</text>
+
+  <rect x="500" y="715" width="12" height="12" rx="2" fill="rgba(251,146,60,0.3)" stroke="#fb923c" stroke-width="1.5"/>
+  <text x="520" y="725" fill="#94a3b8" font-size="9">Abandon Flow — 90% return after 24h cooldown</text>
+
+  <rect x="500" y="735" width="12" height="12" rx="2" fill="rgba(120,53,15,0.3)" stroke="#fbbf24" stroke-width="1.5"/>
+  <text x="520" y="745" fill="#94a3b8" font-size="9">Staking — 5% APY on staked GAME tokens</text>
+
+</svg>

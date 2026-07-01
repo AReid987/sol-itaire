@@ -1,0 +1,251 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&amp;display=swap');
+    text { font-family: 'JetBrains Mono', 'SF Mono', 'Cascadia Code', monospace; }
+  </style>
+
+  <defs>
+    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#1e293b" stroke-width="0.5"/>
+    </pattern>
+    <marker id="arrow-violet" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#a78bfa"/>
+    </marker>
+    <marker id="arrow-emerald" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#34d399"/>
+    </marker>
+    <marker id="arrow-amber" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#fbbf24"/>
+    </marker>
+  </defs>
+
+  <!-- Background -->
+  <rect width="100%" height="100%" fill="#0f172a"/>
+  <rect width="100%" height="100%" fill="url(#grid)"/>
+
+  <!-- Title -->
+  <text x="600" y="35" fill="white" font-size="18" font-weight="700" text-anchor="middle">Sol-itaire Smart Contract Architecture</text>
+  <text x="600" y="52" fill="#94a3b8" font-size="10" text-anchor="middle">Solana / Anchor Programs</text>
+
+  <!-- ==================== SOLITAIRE PROGRAM ==================== -->
+  <rect x="30" y="80" width="360" height="750" rx="12" fill="none" stroke="#a78bfa" stroke-width="2" stroke-dasharray="8,4"/>
+  <text x="45" y="100" fill="#a78bfa" font-size="11" font-weight="700">SOLITAIRE PROGRAM</text>
+  <text x="45" y="115" fill="#64748b" font-size="8">Fg6PaFpoGXkYsidMpWTK6W2BeZ7FEfcYkg476zPFsLnS</text>
+
+  <!-- Instructions -->
+  <rect x="50" y="130" width="320" height="40" rx="6" fill="#0f172a"/>
+  <rect x="50" y="130" width="320" height="40" rx="6" fill="rgba(76,29,149,0.4)" stroke="#a78bfa" stroke-width="1.5"/>
+  <text x="210" y="150" fill="white" font-size="10" font-weight="600" text-anchor="middle">INSTRUCTIONS</text>
+  <text x="210" y="163" fill="#94a3b8" font-size="8" text-anchor="middle">4 functions</text>
+
+  <!-- initialize_game -->
+  <rect x="50" y="185" width="320" height="50" rx="6" fill="#0f172a"/>
+  <rect x="50" y="185" width="320" height="50" rx="6" fill="rgba(6,78,59,0.4)" stroke="#34d399" stroke-width="1.5"/>
+  <text x="70" y="207" fill="#34d399" font-size="10" font-weight="600">initialize_game</text>
+  <text x="70" y="222" fill="#94a3b8" font-size="8">Create game + stake tokens</text>
+
+  <!-- make_move -->
+  <rect x="50" y="245" width="320" height="50" rx="6" fill="#0f172a"/>
+  <rect x="50" y="245" width="320" height="50" rx="6" fill="rgba(6,78,59,0.4)" stroke="#34d399" stroke-width="1.5"/>
+  <text x="70" y="267" fill="#34d399" font-size="10" font-weight="600">make_move</text>
+  <text x="70" y="282" fill="#94a3b8" font-size="8">Validate + execute card move</text>
+
+  <!-- complete_game -->
+  <rect x="50" y="305" width="320" height="50" rx="6" fill="#0f172a"/>
+  <rect x="50" y="305" width="320" height="50" rx="6" fill="rgba(6,78,59,0.4)" stroke="#34d399" stroke-width="1.5"/>
+  <text x="70" y="327" fill="#34d399" font-size="10" font-weight="600">complete_game</text>
+  <text x="70" y="342" fill="#94a3b8" font-size="8">Finalize + distribute rewards</text>
+
+  <!-- withdraw_stake -->
+  <rect x="50" y="365" width="320" height="50" rx="6" fill="#0f172a"/>
+  <rect x="50" y="365" width="320" height="50" rx="6" fill="rgba(6,78,59,0.4)" stroke="#34d399" stroke-width="1.5"/>
+  <text x="70" y="387" fill="#34d399" font-size="10" font-weight="600">withdraw_stake</text>
+  <text x="70" y="402" fill="#94a3b8" font-size="8">Return stake after cooldown</text>
+
+  <!-- Accounts -->
+  <rect x="50" y="430" width="320" height="40" rx="6" fill="#0f172a"/>
+  <rect x="50" y="430" width="320" height="40" rx="6" fill="rgba(76,29,149,0.4)" stroke="#a78bfa" stroke-width="1.5"/>
+  <text x="210" y="450" fill="white" font-size="10" font-weight="600" text-anchor="middle">ACCOUNTS</text>
+  <text x="210" y="463" fill="#94a3b8" font-size="8" text-anchor="middle">On-chain state</text>
+
+  <!-- GameAccount -->
+  <rect x="50" y="485" width="320" height="80" rx="6" fill="#0f172a"/>
+  <rect x="50" y="485" width="320" height="80" rx="6" fill="rgba(120,53,15,0.3)" stroke="#fbbf24" stroke-width="1"/>
+  <text x="70" y="505" fill="#fbbf24" font-size="10" font-weight="600">GameAccount</text>
+  <text x="70" y="520" fill="#94a3b8" font-size="8">player: Pubkey</text>
+  <text x="70" y="533" fill="#94a3b8" font-size="8">game_id: String</text>
+  <text x="70" y="546" fill="#94a3b8" font-size="8">stake_amount: u64</text>
+  <text x="70" y="559" fill="#94a3b8" font-size="8">status: GameStatus</text>
+
+  <!-- GameState -->
+  <rect x="50" y="580" width="320" height="80" rx="6" fill="#0f172a"/>
+  <rect x="50" y="580" width="320" height="80" rx="6" fill="rgba(120,53,15,0.3)" stroke="#fbbf24" stroke-width="1"/>
+  <text x="70" y="600" fill="#fbbf24" font-size="10" font-weight="600">GameState</text>
+  <text x="70" y="615" fill="#94a3b8" font-size="8">tableau: Vec&lt;PileData&gt; (7 piles)</text>
+  <text x="70" y="628" fill="#94a3b8" font-size="8">foundation: Vec&lt;PileData&gt; (4 piles)</text>
+  <text x="70" y="641" fill="#94a3b8" font-size="8">stock + waste: PileData</text>
+  <text x="70" y="654" fill="#94a3b8" font-size="8">moves: u32, score: u32</text>
+
+  <!-- Events -->
+  <rect x="50" y="675" width="320" height="40" rx="6" fill="#0f172a"/>
+  <rect x="50" y="675" width="320" height="40" rx="6" fill="rgba(136,19,55,0.4)" stroke="#fb7185" stroke-width="1"/>
+  <text x="210" y="695" fill="white" font-size="10" font-weight="600" text-anchor="middle">EVENTS</text>
+  <text x="210" y="708" fill="#94a3b8" font-size="8" text-anchor="middle">GameStarted • MoveMade • GameCompleted • StakeWithdrawn</text>
+
+  <!-- Errors -->
+  <rect x="50" y="730" width="320" height="40" rx="6" fill="#0f172a"/>
+  <rect x="50" y="730" width="320" height="40" rx="6" fill="rgba(136,19,55,0.2)" stroke="#fb7185" stroke-width="0.5"/>
+  <text x="210" y="750" fill="#fb7185" font-size="8" text-anchor="middle">GameNotActive • InvalidMove • InsufficientStake • CooldownNotElapsed</text>
+
+  <!-- ==================== GAMING TOKEN PROGRAM ==================== -->
+  <rect x="420" y="80" width="360" height="750" rx="12" fill="none" stroke="#34d399" stroke-width="2" stroke-dasharray="8,4"/>
+  <text x="435" y="100" fill="#34d399" font-size="11" font-weight="700">GAMING TOKEN PROGRAM</text>
+  <text x="435" y="115" fill="#64748b" font-size="8">DhkqYC1mAnZ41dgPz6NDLovGM6zxE1j7wHLBAizYkNB8</text>
+
+  <!-- Instructions -->
+  <rect x="440" y="130" width="320" height="40" rx="6" fill="#0f172a"/>
+  <rect x="440" y="130" width="320" height="40" rx="6" fill="rgba(6,78,59,0.4)" stroke="#34d399" stroke-width="1.5"/>
+  <text x="600" y="150" fill="white" font-size="10" font-weight="600" text-anchor="middle">INSTRUCTIONS</text>
+  <text x="600" y="163" fill="#94a3b8" font-size="8" text-anchor="middle">5 functions</text>
+
+  <!-- initialize_mint -->
+  <rect x="440" y="185" width="320" height="45" rx="6" fill="#0f172a"/>
+  <rect x="440" y="185" width="320" height="45" rx="6" fill="rgba(6,78,59,0.4)" stroke="#34d399" stroke-width="1.5"/>
+  <text x="460" y="205" fill="#34d399" font-size="10" font-weight="600">initialize_mint</text>
+  <text x="460" y="220" fill="#94a3b8" font-size="8">Create GAME token mint</text>
+
+  <!-- mint_tokens -->
+  <rect x="440" y="240" width="320" height="45" rx="6" fill="#0f172a"/>
+  <rect x="440" y="240" width="320" height="45" rx="6" fill="rgba(6,78,59,0.4)" stroke="#34d399" stroke-width="1.5"/>
+  <text x="460" y="260" fill="#34d399" font-size="10" font-weight="600">mint_tokens</text>
+  <text x="460" y="275" fill="#94a3b8" font-size="8">Mint new GAME tokens</text>
+
+  <!-- stake_tokens -->
+  <rect x="440" y="295" width="320" height="45" rx="6" fill="#0f172a"/>
+  <rect x="440" y="295" width="320" height="45" rx="6" fill="rgba(6,78,59,0.4)" stroke="#34d399" stroke-width="1.5"/>
+  <text x="460" y="315" fill="#34d399" font-size="10" font-weight="600">stake_tokens</text>
+  <text x="460" y="330" fill="#94a3b8" font-size="8">Stake GAME for gameplay</text>
+
+  <!-- unstake_tokens -->
+  <rect x="440" y="350" width="320" height="45" rx="6" fill="#0f172a"/>
+  <rect x="440" y="350" width="320" height="45" rx="6" fill="rgba(6,78,59,0.4)" stroke="#34d399" stroke-width="1.5"/>
+  <text x="460" y="370" fill="#34d399" font-size="10" font-weight="600">unstake_tokens</text>
+  <text x="460" y="385" fill="#94a3b8" font-size="8">Withdraw staked tokens</text>
+
+  <!-- claim_rewards -->
+  <rect x="440" y="405" width="320" height="45" rx="6" fill="#0f172a"/>
+  <rect x="440" y="405" width="320" height="45" rx="6" fill="rgba(6,78,59,0.4)" stroke="#34d399" stroke-width="1.5"/>
+  <text x="460" y="425" fill="#34d399" font-size="10" font-weight="600">claim_rewards</text>
+  <text x="460" y="440" fill="#94a3b8" font-size="8">Claim staking APY rewards</text>
+
+  <!-- Accounts -->
+  <rect x="440" y="465" width="320" height="40" rx="6" fill="#0f172a"/>
+  <rect x="440" y="465" width="320" height="40" rx="6" fill="rgba(6,78,59,0.4)" stroke="#34d399" stroke-width="1.5"/>
+  <text x="600" y="485" fill="white" font-size="10" font-weight="600" text-anchor="middle">ACCOUNTS</text>
+  <text x="600" y="498" fill="#94a3b8" font-size="8" text-anchor="middle">Token state</text>
+
+  <!-- MintConfig -->
+  <rect x="440" y="520" width="320" height="70" rx="6" fill="#0f172a"/>
+  <rect x="440" y="520" width="320" height="70" rx="6" fill="rgba(120,53,15,0.3)" stroke="#fbbf24" stroke-width="1"/>
+  <text x="460" y="540" fill="#fbbf24" font-size="10" font-weight="600">MintConfig</text>
+  <text x="460" y="555" fill="#94a3b8" font-size="8">authority: Pubkey</text>
+  <text x="460" y="568" fill="#94a3b8" font-size="8">mint: Pubkey • decimals: u8</text>
+  <text x="460" y="581" fill="#94a3b8" font-size="8">total_supply: u64</text>
+
+  <!-- StakeAccount -->
+  <rect x="440" y="605" width="320" height="80" rx="6" fill="#0f172a"/>
+  <rect x="440" y="605" width="320" height="80" rx="6" fill="rgba(120,53,15,0.3)" stroke="#fbbf24" stroke-width="1"/>
+  <text x="460" y="625" fill="#fbbf24" font-size="10" font-weight="600">StakeAccount</text>
+  <text x="460" y="640" fill="#94a3b8" font-size="8">owner: Pubkey</text>
+  <text x="460" y="653" fill="#94a3b8" font-size="8">amount: u64 • apy_basis_points: u16</text>
+  <text x="460" y="666" fill="#94a3b8" font-size="8">stake_timestamp: i64</text>
+  <text x="460" y="679" fill="#94a3b8" font-size="8">last_claim: i64</text>
+
+  <!-- Events -->
+  <rect x="440" y="700" width="320" height="40" rx="6" fill="#0f172a"/>
+  <rect x="440" y="700" width="320" height="40" rx="6" fill="rgba(136,19,55,0.4)" stroke="#fb7185" stroke-width="1"/>
+  <text x="600" y="720" fill="white" font-size="10" font-weight="600" text-anchor="middle">EVENTS</text>
+  <text x="600" y="733" fill="#94a3b8" font-size="8" text-anchor="middle">MintInitialized • TokensMinted • TokensStaked • RewardsClaimed</text>
+
+  <!-- Errors -->
+  <rect x="440" y="755" width="320" height="40" rx="6" fill="#0f172a"/>
+  <rect x="440" y="755" width="320" height="40" rx="6" fill="rgba(136,19,55,0.2)" stroke="#fb7185" stroke-width="0.5"/>
+  <text x="600" y="775" fill="#fb7185" font-size="8" text-anchor="middle">InsufficientBalance • StakeNotFound • RewardsNotAvailable</text>
+
+  <!-- ==================== MEMECOIN PROGRAM ==================== -->
+  <rect x="810" y="80" width="360" height="750" rx="12" fill="none" stroke="#fbbf24" stroke-width="2" stroke-dasharray="8,4"/>
+  <text x="825" y="100" fill="#fbbf24" font-size="11" font-weight="700">MEMECOIN PROGRAM</text>
+  <text x="825" y="115" fill="#64748b" font-size="8">A1WF2rG5Vs5tG6nhq2ZeDEN9hyESrWV3dtyq1XdBWkqT</text>
+
+  <!-- Instructions -->
+  <rect x="830" y="130" width="320" height="40" rx="6" fill="#0f172a"/>
+  <rect x="830" y="130" width="320" height="40" rx="6" fill="rgba(120,53,15,0.3)" stroke="#fbbf24" stroke-width="1.5"/>
+  <text x="990" y="150" fill="white" font-size="10" font-weight="600" text-anchor="middle">INSTRUCTIONS</text>
+  <text x="990" y="163" fill="#94a3b8" font-size="8" text-anchor="middle">5 functions</text>
+
+  <!-- initialize_memecoin -->
+  <rect x="830" y="185" width="320" height="45" rx="6" fill="#0f172a"/>
+  <rect x="830" y="185" width="320" height="45" rx="6" fill="rgba(120,53,15,0.3)" stroke="#fbbf24" stroke-width="1.5"/>
+  <text x="850" y="205" fill="#fbbf24" font-size="10" font-weight="600">initialize_memecoin</text>
+  <text x="850" y="220" fill="#94a3b8" font-size="8">Create MEME token</text>
+
+  <!-- distribute_initial_supply -->
+  <rect x="830" y="240" width="320" height="45" rx="6" fill="#0f172a"/>
+  <rect x="830" y="240" width="320" height="45" rx="6" fill="rgba(120,53,15,0.3)" stroke="#fbbf24" stroke-width="1.5"/>
+  <text x="850" y="260" fill="#fbbf24" font-size="10" font-weight="600">distribute_initial_supply</text>
+  <text x="850" y="275" fill="#94a3b8" font-size="8">Allocate initial distribution</text>
+
+  <!-- distribute_game_rewards -->
+  <rect x="830" y="295" width="320" height="45" rx="6" fill="#0f172a"/>
+  <rect x="830" y="295" width="320" height="45" rx="6" fill="rgba(120,53,15,0.3)" stroke="#fbbf24" stroke-width="1.5"/>
+  <text x="850" y="315" fill="#fbbf24" font-size="10" font-weight="600">distribute_game_rewards</text>
+  <text x="850" y="330" fill="#94a3b8" font-size="8">Send win rewards + MEME</text>
+
+  <!-- claim_airdrop -->
+  <rect x="830" y="350" width="320" height="45" rx="6" fill="#0f172a"/>
+  <rect x="830" y="350" width="320" height="45" rx="6" fill="rgba(120,53,15,0.3)" stroke="#fbbf24" stroke-width="1.5"/>
+  <text x="850" y="370" fill="#fbbf24" font-size="10" font-weight="600">claim_airdrop</text>
+  <text x="850" y="385" fill="#94a3b8" font-size="8">Claim community airdrop</text>
+
+  <!-- setup_airdrop_account -->
+  <rect x="830" y="405" width="320" height="45" rx="6" fill="#0f172a"/>
+  <rect x="830" y="405" width="320" height="45" rx="6" fill="rgba(120,53,15,0.3)" stroke="#fbbf24" stroke-width="1.5"/>
+  <text x="850" y="425" fill="#fbbf24" font-size="10" font-weight="600">setup_airdrop_account</text>
+  <text x="850" y="440" fill="#94a3b8" font-size="8">Create airdrop allocation</text>
+
+  <!-- Accounts -->
+  <rect x="830" y="465" width="320" height="40" rx="6" fill="#0f172a"/>
+  <rect x="830" y="465" width="320" height="40" rx="6" fill="rgba(120,53,15,0.3)" stroke="#fbbf24" stroke-width="1.5"/>
+  <text x="990" y="485" fill="white" font-size="10" font-weight="600" text-anchor="middle">ACCOUNTS</text>
+  <text x="990" y="498" fill="#94a3b8" font-size="8" text-anchor="middle">Reward &amp; airdrop state</text>
+
+  <!-- MemecoinConfig -->
+  <rect x="830" y="520" width="320" height="70" rx="6" fill="#0f172a"/>
+  <rect x="830" y="520" width="320" height="70" rx="6" fill="rgba(120,53,15,0.3)" stroke="#fbbf24" stroke-width="1"/>
+  <text x="850" y="540" fill="#fbbf24" font-size="10" font-weight="600">MemecoinConfig</text>
+  <text x="850" y="555" fill="#94a3b8" font-size="8">authority: Pubkey</text>
+  <text x="850" y="568" fill="#94a3b8" font-size="8">mint: Pubkey • total_distributed: u64</text>
+  <text x="850" y="581" fill="#94a3b8" font-size="8">reward_per_game: u64 • bonus_multiplier: u16</text>
+
+  <!-- RewardAccount -->
+  <rect x="830" y="605" width="320" height="70" rx="6" fill="#0f172a"/>
+  <rect x="830" y="605" width="320" height="70" rx="6" fill="rgba(120,53,15,0.3)" stroke="#fbbf24" stroke-width="1"/>
+  <text x="850" y="625" fill="#fbbf24" font-size="10" font-weight="600">RewardAccount</text>
+  <text x="850" y="640" fill="#94a3b8" font-size="8">player: Pubkey</text>
+  <text x="850" y="653" fill="#94a3b8" font-size="8">total_earned: u64 • games_won: u32</text>
+  <text x="850" y="666" fill="#94a3b8" font-size="8">current_streak: u32</text>
+
+  <!-- AirdropAccount -->
+  <rect x="830" y="690" width="320" height="60" rx="6" fill="#0f172a"/>
+  <rect x="830" y="690" width="320" height="60" rx="6" fill="rgba(120,53,15,0.3)" stroke="#fbbf24" stroke-width="1"/>
+  <text x="850" y="710" fill="#fbbf24" font-size="10" font-weight="600">AirdropAccount</text>
+  <text x="850" y="725" fill="#94a3b8" font-size="8">recipient: Pubkey • amount: u64</text>
+  <text x="850" y="738" fill="#94a3b8" font-size="8">claimed: bool • expiry: i64</text>
+
+  <!-- Events -->
+  <rect x="830" y="765" width="320" height="40" rx="6" fill="#0f172a"/>
+  <rect x="830" y="765" width="320" height="40" rx="6" fill="rgba(136,19,55,0.4)" stroke="#fb7185" stroke-width="1"/>
+  <text x="990" y="785" fill="white" font-size="10" font-weight="600" text-anchor="middle">EVENTS</text>
+  <text x="990" y="798" fill="#94a3b8" font-size="8" text-anchor="middle">MemecoinInitialized • GameRewardDistributed • AirdropClaimed</text>
+
+</svg>
