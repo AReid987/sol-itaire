@@ -1,0 +1,75 @@
+# GitGuardian configuration to reduce false positives for Sol-itaire project
+
+# Ignore files that are clearly examples or templates
+ignore:
+  paths:
+    - "**.env.example"
+    - "**.env.local.example"
+    - "**.env.production.example"
+    - "sol_itaire/.env.example"
+    - "apps/web/.env.example"
+    - "apps/web/.env.local.example"
+    - "apps/web/.env.production.example"
+    - "apps/backend/.env.example"
+    - "backend/.env.example"
+
+# Allowlist specific patterns that are known to be public keys/addresses in this project
+# These are Solana program IDs and token addresses that are public information
+allowlist:
+  matches:
+    # Solana Gaming Token address (devnet)
+    - "2M4qUmbTiSRtRmfRcnZFWQyNXqkeQ4c9TzCdC7d6svPD"
+    # Solana Memecoin address (devnet)
+    - "6ygxtUVufLvihkSm4xv3Ny42ocRmwbMHaJ23kiovFKiH"
+    # Solana program IDs and token addresses (base58 strings)
+    - pattern: '[1-9A-HJ-NP-Za-km-z]{32,44}'
+      paths:
+        - "**.env.example"
+        - "**.env.local.example"
+        - "**.env.production.example"
+        - "apps/web/src/hooks/useSolana.ts"
+        - "apps/web/src/components/game/DevnetHelper.tsx"
+        - "apps/backend/.env.example"
+        - "sol_itaire/.env.example"
+      secret_types: ["Generic Secret", "API Key", "Auth Token", "Generic High Entropy Secret"]
+
+# Configure specific detectors to be less strict for example files
+detectors:
+  Generic Secret:
+    ignore_entropy_threshold: true
+    paths:
+      - "**.env.example"
+      - "**.env.local.example"
+      - "**.env.production.example"
+  Generic High Entropy Secret:
+    ignore_entropy_threshold: true
+    paths:
+      - "**.env.example"
+      - "**.env.local.example"
+      - "**.env.production.example"
+  API Key:
+    ignore_entropy_threshold: true
+    paths:
+      - "**.env.example"
+      - "**.env.local.example"
+      - "**.env.production.example"
+  Auth Token:
+    ignore_entropy_threshold: true
+    paths:
+      - "**.env.example"
+      - "**.env.local.example"
+      - "**.env.production.example"
+
+# Specific exclusions for known placeholder patterns
+excludes:
+  # Ignore obvious placeholder values
+  - match: 'your-.*-here'
+    secret_types: ["Generic Secret", "API Key", "Auth Token", "Generic High Entropy Secret"]
+  - match: 'your_.*_here'
+    secret_types: ["Generic Secret", "API Key", "Auth Token", "Generic High Entropy Secret"]
+  - match: '.*-for-testing-only'
+    secret_types: ["Generic Secret", "API Key", "Auth Token", "Generic High Entropy Secret"]
+  - match: 'example\.com'
+    secret_types: ["Generic Secret", "API Key", "Auth Token", "Generic High Entropy Secret"]
+  - match: 'https://your-domain\.vercel\.app'
+    secret_types: ["Generic Secret", "API Key", "Auth Token", "Generic High Entropy Secret"]
